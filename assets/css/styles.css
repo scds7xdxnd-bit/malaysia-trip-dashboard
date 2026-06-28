@@ -276,9 +276,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   .wrap{max-width:100%;padding:0}
 
   .langtoggle{display:none!important}
-  .ctrls input,.ctrls select,.ctrls button,.ctrls .fx-refresh,.ctrls .fx-note,
-  .ctrls .paxrow,.ctrls .fxrow,.ctrls .splitmarks,.ctrls .selnote,
-  .rate-wrap{display:none!important}
+  .ctrls{display:none!important}
   .sharebtn{display:none!important}
   .depart{display:none!important}
   .shead .n{display:none!important}
@@ -291,10 +289,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   .console,.ahp,.notes{box-shadow:none;page-break-inside:avoid;background:white!important}
 
   .console-grid{grid-template-columns:1fr!important}
-  .ctrls{border-right:none!important;border-bottom:1px solid #ccc!important;padding:12px 16px!important}
   .readout{padding:12px 16px!important}
-  .ctrl{margin-bottom:8px!important}
-  .ctrl > label{font-size:9.5px!important;margin-bottom:2px!important;white-space:nowrap!important}
 
   .days{grid-template-columns:repeat(4,1fr)!important;gap:5px!important}
   .day{padding:7px 8px 9px!important}
