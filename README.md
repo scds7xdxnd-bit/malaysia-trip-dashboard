@@ -18,12 +18,30 @@ No build step — open `index.html` in any modern browser.
 index.html              markup + element hooks
 assets/css/styles.css   all styling (dark theme, responsive)
 assets/js/data.js       trip constants, criteria, hotels, itinerary plans
+assets/js/i18n.js       dictionary-based EN / 中文 internationalization
 assets/js/render.js     pure render functions driven by app state
 assets/js/main.js       state, event wiring, bootstrap
 ```
 
 Scripts are plain classic scripts (no bundler) loaded in order, so the page
 still opens straight from the filesystem.
+
+## Languages
+
+The 🌐 button (top-right) toggles between **English** and **简体中文 (Mandarin)**.
+
+i18n is a small dictionary layer in `assets/js/i18n.js`:
+
+- Static UI copy carries `data-i18n="key"` (text) or `data-i18n-html="key"`
+  (rich text) attributes; `I18N.apply()` fills them from the active dictionary.
+- Bilingual data fields (hotel `area`, itinerary plans, dates) are `{ en, zh }`
+  pairs read through `I18N.L()`.
+- Dynamic strings are built with `t('key', { token: value })` interpolation.
+- The choice persists in `localStorage('trip-lang')`. Chinese uses native system
+  CJK fonts, so no extra web font is downloaded.
+
+To add a language, add a dictionary to `DICT` in `i18n.js` and a `zh`-style key to
+the bilingual data fields.
 
 ## Method
 

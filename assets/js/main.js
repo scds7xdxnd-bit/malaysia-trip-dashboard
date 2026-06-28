@@ -11,6 +11,8 @@ const pgSel = document.getElementById('pgSel');
 
 /* ---------- bootstrap ---------- */
 function init(){
+  I18N.initLang();                 // restore saved language before first paint
+
   fillSel(klSel, KL, st.kl);
   fillSel(pgSel, PG, st.pg);
 
@@ -23,7 +25,9 @@ function init(){
   klSel.addEventListener('change', e => { st.kl = e.target.value; renderBudget(); renderAHP(); });
   pgSel.addEventListener('change', e => { st.pg = e.target.value; renderBudget(); renderAHP(); });
 
-  renderAll();
+  document.getElementById('langBtn').addEventListener('click', () => I18N.toggle());
+
+  I18N.apply();                    // fills static text + title + button, then renderAll()
 }
 
 init();

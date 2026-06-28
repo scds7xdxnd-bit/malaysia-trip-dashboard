@@ -9,18 +9,18 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:Inter,system-ui,sans-serif;line-height:1.5;
+  font-family:Inter,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;line-height:1.5;
   -webkit-font-smoothing:antialiased;}
 .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
 a{color:inherit}
-.mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.mono{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-variant-numeric:tabular-nums}
 
 /* ---------- language toggle ---------- */
 .langtoggle{position:fixed;top:14px;right:14px;z-index:50;
   display:inline-flex;align-items:center;gap:7px;
   background:var(--panel2);color:var(--ink);border:1px solid var(--line);
   border-radius:22px;padding:8px 14px;min-height:38px;cursor:pointer;
-  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+  font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:12px;font-weight:500;
   letter-spacing:.04em;box-shadow:0 2px 12px rgba(0,0,0,.35);
   transition:border-color .2s,background .2s}
 .langtoggle:hover{border-color:var(--mut)}
@@ -31,22 +31,22 @@ a{color:inherit}
 /* ---------- header ---------- */
 header.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 28px;
   padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:26px}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+.eyebrow{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:11px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--dim)}
-h1{font-family:Archivo;font-weight:800;font-size:clamp(30px,5.4vw,52px);
+h1{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;font-size:clamp(30px,5.4vw,52px);
   line-height:.98;margin:6px 0 0;letter-spacing:-.02em}
 h1 .x{color:var(--dim);font-weight:600;padding:0 .12em}
 h1 .a-kl{color:var(--kl)} h1 .a-pg{color:var(--pg)}
 .meta{display:flex;flex-direction:column;gap:6px;margin-left:auto;text-align:right}
-.meta .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+.meta .lab{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--dim)}
-.meta .val{font-family:Archivo;font-weight:700;font-size:19px}
+.meta .val{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:700;font-size:19px}
 
 /* ---------- section frame ---------- */
 section{margin-top:30px}
 .shead{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
-.shead .n{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)}
-.shead h2{font-family:Archivo;font-weight:700;font-size:18px;margin:0;letter-spacing:.01em}
+.shead .n{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:12px;color:var(--dim)}
+.shead h2{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:700;font-size:18px;margin:0;letter-spacing:.01em}
 .shead .sub{font-size:12.5px;color:var(--mut);margin-left:auto;text-align:right}
 
 /* ---------- budget console ---------- */
@@ -61,7 +61,7 @@ section{margin-top:30px}
 .ctrl{margin-bottom:20px}
 .ctrl:last-child{margin-bottom:0}
 .ctrl > label{display:flex;justify-content:space-between;align-items:center;
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+  font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--mut);margin-bottom:9px}
 .ctrl > label b{color:var(--ink);font-weight:700;letter-spacing:0;font-size:12.5px}
 select{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);
@@ -83,14 +83,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   background:var(--ink);border:3px solid var(--bg);cursor:pointer}
 .splitmarks{display:flex;justify-content:space-between;margin-top:8px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mut)}
+  font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:11px;color:var(--mut)}
 .splitmarks .kl{color:var(--kl)} .splitmarks .pg{color:var(--pg)}
 
 /* fuel gauge */
 .gauge-lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.gauge-lab .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+.gauge-lab .t{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--mut)}
-.gauge-lab .pct{font-family:Archivo;font-weight:800;font-size:15px}
+.gauge-lab .pct{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;font-size:15px}
 .gauge{position:relative;height:22px;background:var(--bg);border:1px solid var(--line);
   border-radius:7px;overflow:hidden}
 .gfill{position:absolute;left:0;top:0;bottom:0;width:0;
@@ -100,10 +100,10 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 
 .total-row{display:flex;align-items:baseline;justify-content:space-between;
   margin:18px 0 4px}
-.total-row .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+.total-row .k{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--mut)}
-.total-big{font-family:Archivo;font-weight:800;font-size:34px;letter-spacing:-.01em}
-.remain{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500}
+.total-big{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.01em}
+.remain{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:13px;font-weight:500}
 .remain.ok{color:var(--green)} .remain.bad{color:var(--red)}
 .verdict{font-size:12.5px;color:var(--mut);margin-top:2px;min-height:18px}
 
@@ -111,8 +111,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 .brow{display:flex;align-items:center;gap:10px;font-size:12.5px;padding:5px 0}
 .brow .dot{width:8px;height:8px;border-radius:2px;flex:none}
 .brow .name{color:var(--mut)}
-.brow .calc{margin-left:auto;font-family:'JetBrains Mono',monospace;color:var(--dim);font-size:11px}
-.brow .amt{font-family:'JetBrains Mono',monospace;color:var(--ink);font-weight:500;min-width:62px;text-align:right}
+.brow .calc{margin-left:auto;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;color:var(--dim);font-size:11px}
+.brow .amt{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;color:var(--ink);font-weight:500;min-width:62px;text-align:right}
 
 /* ---------- itinerary ---------- */
 .days{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
@@ -121,15 +121,15 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 .day::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
 .day.kl::before{background:var(--kl)} .day.pg::before{background:var(--pg)}
 .day .dh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
-.day .nite{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:.08em}
-.day .city{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;font-weight:700;text-transform:uppercase}
+.day .nite{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:10.5px;color:var(--dim);letter-spacing:.08em}
+.day .city{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:10px;letter-spacing:.14em;font-weight:700;text-transform:uppercase}
 .day.kl .city{color:var(--kl)} .day.pg .city{color:var(--pg)}
-.day .date{font-family:Archivo;font-weight:700;font-size:15px;margin-bottom:6px}
+.day .date{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px}
 .day .plan{font-size:12px;color:var(--mut);line-height:1.42}
-.day .flag{display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace;
+.day .flag{display:inline-block;margin-top:8px;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;
   font-size:10px;letter-spacing:.06em;color:var(--pg);border:1px solid var(--pg);
   border-radius:5px;padding:2px 6px}
-.depart{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--mut);
+.depart{margin-top:10px;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:12px;color:var(--mut);
   border:1px dashed var(--line);border-radius:9px;padding:11px 14px;display:flex;gap:10px;align-items:center}
 .depart b{color:var(--ink)}
 
@@ -141,19 +141,19 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 .lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
 .bar-row{display:grid;grid-template-columns:24px 1fr auto;align-items:center;gap:11px;
   padding:6px 0;cursor:default}
-.bar-row .rk{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);text-align:right}
+.bar-row .rk{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:12px;color:var(--dim);text-align:right}
 .bar-row.pick .rk{color:var(--ink)}
 .bar-wrap{min-width:0}
 .bar-top{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
 .bar-top .hn{font-size:13px;font-weight:600}
-.bar-top .hmeta{font-size:11px;color:var(--dim);font-family:'JetBrains Mono',monospace}
-.bar-top .picktag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;
+.bar-top .hmeta{font-size:11px;color:var(--dim);font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
+.bar-top .picktag{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:9.5px;letter-spacing:.1em;
   text-transform:uppercase;padding:1px 6px;border-radius:4px;font-weight:700}
 .ahp.kl .picktag{background:var(--kl);color:#1a1300} .ahp.pg .picktag{background:var(--pg);color:#04201f}
 .bar{display:flex;height:13px;border-radius:4px;overflow:hidden;background:var(--bg);
   box-shadow:inset 0 0 0 1px var(--line)}
 .bar span{height:100%;transition:width .4s ease}
-.bar-row .sc{font-family:Archivo;font-weight:800;font-size:15px;min-width:42px;text-align:right}
+.bar-row .sc{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;font-size:15px;min-width:42px;text-align:right}
 .bar-row:not(.pick) .hn{color:var(--ink)}
 .bar-row:not(.pick){opacity:.92}
 .bar-row.pick{background:linear-gradient(90deg,rgba(255,255,255,.04),transparent);
@@ -161,16 +161,16 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 
 /* ---------- method / notes ---------- */
 .notes{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
-.notes h3{font-family:Archivo;font-weight:700;font-size:13px;margin:0 0 10px;
+.notes h3{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:700;font-size:13px;margin:0 0 10px;
   letter-spacing:.04em;text-transform:uppercase;color:var(--mut)}
 .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin-bottom:14px}
 .wcard{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 11px}
 .wcard .wt{font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px;margin-bottom:5px}
 .wcard .wt i{width:9px;height:9px;border-radius:2px}
-.wcard .wv{font-family:Archivo;font-weight:800;font-size:20px}
+.wcard .wv{font-family:Archivo,'PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;font-size:20px}
 .notes p{font-size:12.5px;color:var(--mut);margin:7px 0}
-.notes .fine{font-size:11.5px;color:var(--dim);font-family:'JetBrains Mono',monospace;line-height:1.6}
+.notes .fine{font-size:11.5px;color:var(--dim);font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;line-height:1.6}
 .pillbar{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
-.pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--mut);
+.pill{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;font-size:10.5px;color:var(--mut);
   border:1px solid var(--line);border-radius:20px;padding:3px 10px}
 .disclaim{margin-top:20px;font-size:11px;color:var(--dim);text-align:center;line-height:1.6}
