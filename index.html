@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101216">
-<title>KL × Penang — Trip Console</title>
+<title>KL × Kota Kinabalu — Luxury Trip Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -20,14 +20,14 @@
 
   <header class="top">
     <div>
-      <div class="eyebrow" data-i18n="header.eyebrow">AHP decision console · 2 cities · 7 nights</div>
-      <h1><span class="a-kl" data-i18n="city.kl">Kuala Lumpur</span><span class="x">×</span><span class="a-pg" data-i18n="city.pg">Penang</span></h1>
+      <div class="eyebrow" data-i18n="header.eyebrow">AHP luxury console · KL × Kota Kinabalu · Jul 16–25</div>
+      <h1><span class="a-kl" data-i18n="city.kl">Kuala Lumpur</span><span class="x">×</span><span class="a-pg" data-i18n="city.pg">Kota Kinabalu</span></h1>
     </div>
     <div class="meta">
-      <div><span class="lab" data-i18n="meta.window">Window</span><br><span class="val" data-i18n="meta.windowVal">Jul 16 → 23</span></div>
+      <div><span class="lab" data-i18n="meta.window">Window</span><br><span class="val" data-i18n="meta.windowVal">Jul 16 → 25</span></div>
     </div>
     <div class="meta" style="margin-left:0">
-      <div><span class="lab" data-i18n="meta.budget">Budget · 2 pax</span><br><span class="val mono" id="budgetHdr">RM 5,824</span></div>
+      <div><span class="lab" data-i18n="meta.budget">Budget · 2 pax</span><br><span class="val mono" id="budgetHdr">RM 6,600</span></div>
     </div>
   </header>
 
@@ -44,8 +44,8 @@
             <label><span data-i18n="budget.group">Your budgets</span></label>
             <div class="paxrow">
               <span class="paxlab" data-i18n="budget.you">Taeyang</span>
-              <input type="number" id="youAmt" min="0" value="2000000" inputmode="decimal" aria-label="You budget amount">
-              <select id="youCcy" aria-label="You currency">
+              <input type="number" id="youAmt" min="0" value="2000000" inputmode="decimal" aria-label="Taeyang budget amount">
+              <select id="youCcy" aria-label="Taeyang currency">
                 <option value="KRW">KRW</option>
                 <option value="CNY">CNY</option>
                 <option value="MYR">MYR</option>
@@ -61,16 +61,16 @@
               </select>
             </div>
 
-            <div class="totaline mono" id="budgetTotalLine">= RM 5,824 total budget</div>
+            <div class="totaline mono" id="budgetTotalLine">= RM 6,600 total budget</div>
           </div>
 
           <div class="ctrl">
-            <label><span data-i18n="ctrl.split">Night split</span> <b><span id="splitTxt">4 KL · 3 Penang</span></b></label>
+            <label><span data-i18n="ctrl.split">Night split</span> <b><span id="splitTxt">4 KL · 3 KK</span></b></label>
             <input type="range" id="split" min="2" max="5" step="1" value="4">
             <div class="splitmarks">
               <span class="kl" data-i18n="marks.moreKL">more KL</span>
-              <span data-i18n="marks.total7">7 nights total</span>
-              <span class="pg" data-i18n="marks.morePG">more Penang</span>
+              <span data-i18n="marks.total7">7 nights · 8 days</span>
+              <span class="pg" data-i18n="marks.morePG">more KK</span>
             </div>
           </div>
           <div class="ctrl">
@@ -78,7 +78,7 @@
               <span data-i18n="ctrl.klHotel">Kuala Lumpur hotel</span>
               <span class="rate-wrap">
                 <span class="r8r" data-i18n="rate.rm">RM</span>
-                <input type="number" id="klRateInp" class="rate-inp" value="475" min="0" step="10" inputmode="decimal" aria-label="KL hotel rate">
+                <input type="number" id="klRateInp" class="rate-inp" value="950" min="0" step="10" inputmode="decimal" aria-label="KL hotel rate">
                 <span class="r8r" data-i18n="rate.perSuffix">/nt</span>
               </span>
             </label>
@@ -89,10 +89,10 @@
           </div>
           <div class="ctrl">
             <label>
-              <span data-i18n="ctrl.pgHotel">Penang hotel</span>
+              <span data-i18n="ctrl.pgHotel">Kota Kinabalu hotel</span>
               <span class="rate-wrap">
                 <span class="r8r" data-i18n="rate.rm">RM</span>
-                <input type="number" id="pgRateInp" class="rate-inp" value="600" min="0" step="10" inputmode="decimal" aria-label="PG hotel rate">
+                <input type="number" id="pgRateInp" class="rate-inp" value="800" min="0" step="10" inputmode="decimal" aria-label="PG hotel rate">
                 <span class="r8r" data-i18n="rate.perSuffix">/nt</span>
               </span>
             </label>
@@ -102,21 +102,21 @@
               </div>
           </div>
           <div class="ctrl">
-            <label><span data-i18n="ctrl.daily">Daily spend · food + Grab + sights</span> <b class="mono" id="dailyTxt">RM 250/day</b></label>
-            <input type="range" id="daily" min="120" max="420" step="10" value="250">
+            <label><span data-i18n="ctrl.daily">Daily spend · food + Grab + sights</span> <b class="mono" id="dailyTxt">RM 350/day</b></label>
+            <input type="range" id="daily" min="150" max="600" step="10" value="350">
             <div class="splitmarks"><span data-i18n="marks.lean">lean</span><span data-i18n="marks.perDay">both of you, per day</span><span data-i18n="marks.lavish">lavish</span></div>
           </div>
 
           <div class="ctrl">
             <label><span data-i18n="flights.group">Flights</span></label>
             <div class="paxrow">
-              <span class="paxlab" data-i18n="flights.out">KUL → PEN</span>
-              <input type="number" id="flightOut" min="0" step="5" value="150" inputmode="decimal" aria-label="KUL to PEN flight">
+              <span class="paxlab" data-i18n="flights.out">KUL → BKI</span>
+              <input type="number" id="flightOut" min="0" step="5" value="560" inputmode="decimal" aria-label="KUL to BKI flight">
               <span class="paxlab" style="min-width:auto">MYR</span>
             </div>
             <div class="paxrow">
-              <span class="paxlab" data-i18n="flights.back">PEN → KUL</span>
-              <input type="number" id="flightBack" min="0" step="5" value="150" inputmode="decimal" aria-label="PEN to KUL flight">
+              <span class="paxlab" data-i18n="flights.back">BKI → KUL</span>
+              <input type="number" id="flightBack" min="0" step="5" value="840" inputmode="decimal" aria-label="BKI to KUL flight">
               <span class="paxlab" style="min-width:auto">MYR</span>
             </div>
           </div>
@@ -125,7 +125,7 @@
             <label><span data-i18n="fx.group">Exchange rates</span></label>
             <div class="fxrow">
               <span class="paxlab" data-i18n="fx.krw">1 KRW =</span>
-              <input type="number" id="krwRate" min="0" step="0.000001" value="0.002662" inputmode="decimal" aria-label="KRW to MYR rate">
+              <input type="number" id="krwRate" min="0" step="0.000001" value="0.0033" inputmode="decimal" aria-label="KRW to MYR rate">
               <span class="paxlab" style="min-width:auto">MYR</span>
             </div>
             <div class="fxrow">
@@ -168,7 +168,7 @@
   <section id="itin">
     <div class="shead">
       <span class="n">02</span><h2 data-i18n="sec.itin">Itinerary</h2>
-      <span class="sub" data-i18n-html="itin.sub">Re-flows with the night split. <span style="color:var(--kl)">amber = KL</span> · <span style="color:var(--pg)">teal = Penang</span></span>
+      <span class="sub" data-i18n-html="itin.sub">8 days total — 7 hotel nights + 1 day together. Re-flows with the night split. <span style="color:var(--kl)">amber = KL</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span> · <span style="color:var(--red)">red = together, then part ways</span></span>
     </div>
     <div class="days" id="days"></div>
     <div class="depart" id="departStrip"></div>
@@ -189,8 +189,8 @@
   <!-- ===================== PENANG AHP ===================== -->
   <section id="ahp-pg">
     <div class="shead">
-      <span class="n">04</span><h2 data-i18n="sec.ahpPG">AHP — Penang</h2>
-      <span class="sub" data-i18n-html="ahpPG.sub">Same weights. Beach resorts take the Location hit — see note.</span>
+      <span class="n">04</span><h2 data-i18n="sec.ahpPG">AHP — Kota Kinabalu</h2>
+      <span class="sub" data-i18n-html="ahpPG.sub">Same weights. Island resorts win on luxury but lose Location &amp; Value — see note.</span>
     </div>
     <div class="ahp pg">
       <div class="legend" id="legendPG"></div>
@@ -202,17 +202,18 @@
   <section id="method">
     <div class="shead"><span class="n">05</span><h2 data-i18n="sec.method">Method &amp; caveats</h2></div>
     <div class="notes">
-      <h3 data-i18n="method.h3">Criteria weights · pairwise AHP · CR = 0.016 (consistent)</h3>
+      <h3 data-i18n="method.h3">Luxury-tilted weights · pairwise AHP · CR = 0.004 (consistent)</h3>
       <div class="wgrid" id="wgrid"></div>
-      <p data-i18n-html="method.p1"><b style="color:var(--ink)">Coupled-budget rule.</b> The two AHP winners (Mandarin Oriental + The Edison) overshoot ~RM700 at 4/3 nights. Feasible flagship pairing: <span style="color:var(--kl)">Traders KL</span> (AHP #3, best Petronas view) + <span style="color:var(--pg)">The Edison</span> = ~RM5,730. Or keep MO and drop to 3 KL nights.</p>
-      <p data-i18n-html="method.p2"><b style="color:var(--ink)">City vs beach.</b> Location weight (0.14) favours Georgetown boutiques. Want a beach half? Mentally zero Location → <span style="color:var(--pg)">Rasa Sayang</span> leads on Luxury + Amenities.</p>
-      <p data-i18n-html="method.weather"><b style="color:var(--ink)">Weather &amp; packing.</b> July in KL &amp; Penang: hot (28–33°C), humid (80%+), afternoon thunderstorms. Pack: lightweight cotton/linen, rain jacket, umbrella, sunscreen, insect repellent, comfortable walking shoes, universal adapter (Type G).</p>
+      <p data-i18n-html="method.p1"><b style="color:var(--ink)">Core + alpha.</b> Taeyang's ₩2,000,000 core (≈ RM6,600) covers roughly one flagship, not two. The AHP winners — <span style="color:var(--kl)">Mandarin Oriental</span> (KLCC, ~RM950) + <span style="color:var(--pg)">Shangri-La Tanjung Aru</span> (~RM800) — run ~RM10,400 all-in for two over 7 nights / 8 days together; the ~RM3,800 gap is Taeyang's alpha. Swap MO for <span style="color:var(--kl)">Park Hyatt</span> (Merdeka 118, ~RM1,600) only for the ultra-splurge — it is AHP #3 here and lifts the KL bill ~70%.</p>
+      <p data-i18n-html="method.p2"><b style="color:var(--ink)">Island, beach, or city?</b> Re-weighting cut Value to 0.10 and kept Location at 0.16, so the verdict still favours the mainland: <span style="color:var(--pg)">Tanjung Aru</span> is the one pick that is genuinely beachfront <em>and</em> 15 min from town and the airport. <span style="color:var(--pg)">Gaya Island</span> &amp; <span style="color:var(--pg)">Bunga Raya</span> edge it on raw luxury but lose on access (boat-only) and value.</p>
+      <p data-i18n-html="method.p3"><b>Factcheck flags:</b> Gaya Island &amp; Bunga Raya are boat-access only from Jesselton Point (~15–20 min) — no walk-in or late arrivals. Nexus Karambunai is ~45 min out, effectively stay-put. Park Hyatt KL is in Merdeka 118 (not KLCC) and budget-breaking at ~RM1,600. City hotels (Hyatt Centric, Le Méridien, Hilton) have rooftop pools but no swimmable beach.</p>
+      <p data-i18n-html="method.weather"><b style="color:var(--ink)">Weather &amp; packing.</b> July in KL &amp; Kota Kinabalu: hot (28–33°C), humid, short afternoon downpours; Sabah seas are usually calm — good for island hopping. Pack: linen/cotton, swimwear &amp; reef-safe sunscreen, rain shell, insect repellent, walking shoes, Type-G adapter.</p>
       <div class="pillbar">
-        <span class="pill">1 KRW = 0.002662 MYR</span>
-        <span class="pill" data-i18n="pill.flights">flights KUL↔PEN ~1h</span>
+        <span class="pill">1 KRW = 0.0033 MYR</span>
+        <span class="pill" data-i18n="pill.flights">flights KUL↔BKI ~2h 45m</span>
         <span class="pill" data-i18n="pill.rates">rates = approx, Jul 2026</span>
       </div>
-      <div class="disclaim" data-i18n="method.disclaim">Hotel rates are mid-range estimates and move with dates/availability — confirm at booking. Ratings = Google, fetched Jun 2026. Scores reflect a defensible default weighting; adjust the weights and the order shifts.</div>
+      <div class="disclaim" data-i18n="method.disclaim">Nightly rates are representative July-2026 estimates (researched Jun 2026 across Booking / Agoda / KAYAK / official sites) and move with dates/availability — confirm at booking. The Value criterion is derived directly from price (Value = C ÷ rate), so editing a rate re-scores that hotel live. Ratings = Google, fetched Jun 2026. Adjust the weights and the order shifts.</div>
     </div>
   </section>
 
