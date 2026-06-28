@@ -23,7 +23,7 @@ const I18N = (function(){
       'meta.budget':      'Budget · 2 pax',
 
       'sec.console':      'Budget console',
-      'console.sub':      'Pick a hotel per city + split the nights.<br>The gauge redlines if the plan exceeds RM 5,824.',
+      'console.sub':      'Pick a hotel per city + split the nights.',
       'ctrl.split':       'Night split',
       'marks.moreKL':     'more KL',
       'marks.total7':     '7 nights total',
@@ -121,7 +121,7 @@ const I18N = (function(){
       'meta.budget':      '预算 · 2 人',
 
       'sec.console':      '预算控制台',
-      'console.sub':      '为每座城市选一家酒店，并分配晚数。<br>若方案超过 RM 5,824，仪表将转入红区。',
+      'console.sub':      '为每座城市选一家酒店，并分配晚数。',
       'ctrl.split':       '晚数分配',
       'marks.moreKL':     '吉隆坡更多',
       'marks.total7':     '共 7 晚',
