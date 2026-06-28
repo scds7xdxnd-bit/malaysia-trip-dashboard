@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KL × Penang — Trip Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="eyebrow">AHP decision console · 2 cities · 7 nights</div>
+      <h1><span class="a-kl">Kuala Lumpur</span><span class="x">×</span><span class="a-pg">Penang</span></h1>
+    </div>
+    <div class="meta">
+      <div><span class="lab">Window</span><br><span class="val">Jul 16 → 23</span></div>
+    </div>
+    <div class="meta" style="margin-left:0">
+      <div><span class="lab">Budget · 2 pax</span><br><span class="val mono">RM 5,824</span></div>
+    </div>
+  </header>
+
+  <!-- ===================== BUDGET CONSOLE ===================== -->
+  <section id="console">
+    <div class="shead">
+      <span class="n">01</span><h2>Budget console</h2>
+      <span class="sub">Pick a hotel per city + split the nights.<br>The gauge redlines if the plan exceeds RM 5,824.</span>
+    </div>
+    <div class="console">
+      <div class="console-grid">
+        <div class="ctrls">
+          <div class="ctrl">
+            <label>Night split <b><span id="splitTxt">4 KL · 3 Penang</span></b></label>
+            <input type="range" id="split" min="2" max="5" step="1" value="4">
+            <div class="splitmarks">
+              <span class="kl">more KL</span>
+              <span>7 nights total</span>
+              <span class="pg">more Penang</span>
+            </div>
+          </div>
+          <div class="ctrl">
+            <label>Kuala Lumpur hotel <b class="mono" id="klRateTxt">RM 475/nt</b></label>
+            <div class="selrow">
+              <select id="klSel"></select>
+              <div class="selnote"><span class="kl">●</span> <span id="klArea"></span></div>
+            </div>
+          </div>
+          <div class="ctrl">
+            <label>Penang hotel <b class="mono" id="pgRateTxt">RM 600/nt</b></label>
+            <div class="selrow">
+              <select id="pgSel"></select>
+              <div class="selnote"><span class="pg">●</span> <span id="pgArea"></span></div>
+            </div>
+          </div>
+          <div class="ctrl">
+            <label>Daily spend · food + Grab + sights <b class="mono" id="dailyTxt">RM 250/day</b></label>
+            <input type="range" id="daily" min="120" max="420" step="10" value="250">
+            <div class="splitmarks"><span>lean</span><span>both of you, per day</span><span>lavish</span></div>
+          </div>
+        </div>
+
+        <div class="readout">
+          <div class="gauge-lab">
+            <span class="t">Budget used</span>
+            <span class="pct mono" id="pctTxt">0%</span>
+          </div>
+          <div class="gauge"><div class="gfill" id="gfill"></div><div class="gredline" id="redline"></div></div>
+
+          <div class="total-row">
+            <span class="k">Trip total</span>
+            <span class="remain" id="remain">—</span>
+          </div>
+          <div class="total-big mono" id="totalBig">RM 0</div>
+          <div class="verdict" id="verdict"></div>
+
+          <div class="breakdown" id="breakdown"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ITINERARY ===================== -->
+  <section id="itin">
+    <div class="shead">
+      <span class="n">02</span><h2>Itinerary</h2>
+      <span class="sub">Re-flows with the night split. <span style="color:var(--kl)">amber = KL</span> · <span style="color:var(--pg)">teal = Penang</span></span>
+    </div>
+    <div class="days" id="days"></div>
+    <div class="depart" id="departStrip"></div>
+  </section>
+
+  <!-- ===================== KL AHP ===================== -->
+  <section id="ahp-kl">
+    <div class="shead">
+      <span class="n">03</span><h2>AHP — Kuala Lumpur</h2>
+      <span class="sub">Bar length = weighted score (0–10). Segments show <em>why</em>.</span>
+    </div>
+    <div class="ahp kl">
+      <div class="legend" id="legendKL"></div>
+      <div id="barsKL"></div>
+    </div>
+  </section>
+
+  <!-- ===================== PENANG AHP ===================== -->
+  <section id="ahp-pg">
+    <div class="shead">
+      <span class="n">04</span><h2>AHP — Penang</h2>
+      <span class="sub">Same weights. Beach resorts take the Location hit — see note.</span>
+    </div>
+    <div class="ahp pg">
+      <div class="legend" id="legendPG"></div>
+      <div id="barsPG"></div>
+    </div>
+  </section>
+
+  <!-- ===================== METHOD ===================== -->
+  <section id="method">
+    <div class="shead"><span class="n">05</span><h2>Method &amp; caveats</h2></div>
+    <div class="notes">
+      <h3>Criteria weights · pairwise AHP · CR = 0.016 (consistent)</h3>
+      <div class="wgrid" id="wgrid"></div>
+      <p><b style="color:var(--ink)">Coupled-budget rule.</b> The two AHP winners (Mandarin Oriental + The Edison) overshoot ~RM700 at 4/3 nights. Feasible flagship pairing: <span style="color:var(--kl)">Traders KL</span> (AHP #3, best Petronas view) + <span style="color:var(--pg)">The Edison</span> = ~RM5,730. Or keep MO and drop to 3 KL nights.</p>
+      <p><b style="color:var(--ink)">City vs beach.</b> Location weight (0.14) favours Georgetown boutiques. Want a beach half? Mentally zero Location → <span style="color:var(--pg)">Rasa Sayang</span> leads on Luxury + Amenities.</p>
+      <p style="color:var(--dim)"><b>Factcheck flags:</b> Park Hyatt = Merdeka 118 (not CBD), budget-breaking at ~RM1,300. Ritz "Michelin-starred" → Li Yen is Michelin <em>Selected</em>, not starred. Majestic / Stripes sit off the tourist core. E&O recent service inconsistency; Rasa Sayang dated + golf/shuttle suspended; Lone Pine now 4.1★.</p>
+      <div class="pillbar">
+        <span class="pill">1 KRW = 0.002662 MYR</span>
+        <span class="pill">2M KRW + RM500 = RM 5,824</span>
+        <span class="pill">flights KUL↔PEN ~1h</span>
+        <span class="pill">rates = approx, Jul 2026</span>
+      </div>
+      <div class="disclaim">Hotel rates are mid-range estimates and move with dates/availability — confirm at booking. Ratings = Google, fetched Jun 2026. Scores reflect a defensible default weighting; adjust the weights and the order shifts.</div>
+    </div>
+  </section>
+
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/render.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

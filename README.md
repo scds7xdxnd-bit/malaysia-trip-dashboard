@@ -10,7 +10,20 @@ trip (Jul 16–23, 2026, 2 pax). It bundles three things into one screen:
 - **AHP hotel ranking** — pairwise Analytic Hierarchy Process scores for 11 KL and
   10 Penang hotels, with stacked bars showing *why* each scored as it did.
 
-No build step — open the HTML in any modern browser.
+No build step — open `index.html` in any modern browser.
+
+## Project structure
+
+```
+index.html              markup + element hooks
+assets/css/styles.css   all styling (dark theme, responsive)
+assets/js/data.js       trip constants, criteria, hotels, itinerary plans
+assets/js/render.js     pure render functions driven by app state
+assets/js/main.js       state, event wiring, bootstrap
+```
+
+Scripts are plain classic scripts (no bundler) loaded in order, so the page
+still opens straight from the filesystem.
 
 ## Method
 
