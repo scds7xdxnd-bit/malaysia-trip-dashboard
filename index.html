@@ -12,6 +12,10 @@
 </head>
 <body>
 
+<button class="themetoggle" id="themeBtn" type="button" aria-label="Toggle light/dark theme">
+  <span class="ticon" aria-hidden="true">🌙</span>
+</button>
+
 <button class="langtoggle" id="langBtn" type="button" aria-label="Switch language">
   <span class="globe" aria-hidden="true">🌐</span><span class="next">中文</span>
 </button>
@@ -102,9 +106,7 @@
               </div>
           </div>
           <div class="ctrl">
-            <label><span data-i18n="ctrl.daily">Daily spend · food + Grab + sights</span> <b class="mono" id="dailyTxt">RM 350/day</b></label>
-            <input type="range" id="daily" min="150" max="600" step="10" value="350">
-            <div class="splitmarks"><span data-i18n="marks.lean">lean</span><span data-i18n="marks.perDay">both of you, per day</span><span data-i18n="marks.lavish">lavish</span></div>
+            <label><span data-i18n="ctrl.itinerary">Itinerary costs</span> <b class="mono" id="dailyTxt">RM 0</b></label>
           </div>
 
           <div class="ctrl">
@@ -121,21 +123,6 @@
             </div>
           </div>
 
-          <div class="ctrl">
-            <label><span data-i18n="fx.group">Exchange rates</span></label>
-            <div class="fxrow">
-              <span class="paxlab" data-i18n="fx.krw">1 KRW =</span>
-              <input type="number" id="krwRate" min="0" step="0.000001" value="0.0033" inputmode="decimal" aria-label="KRW to MYR rate">
-              <span class="paxlab" style="min-width:auto">MYR</span>
-            </div>
-            <div class="fxrow">
-              <span class="paxlab" data-i18n="fx.cny">1 CNY =</span>
-              <input type="number" id="cnyRate" min="0" step="0.0001" value="0.62" inputmode="decimal" aria-label="CNY to MYR rate">
-              <span class="paxlab" style="min-width:auto">MYR</span>
-            </div>
-            <button type="button" class="fx-refresh" id="fxBtn" data-i18n="fx.refresh">↻ refresh</button>
-            <span class="fx-note" id="fxNote"></span>
-          </div>
 
           <div class="ctrl">
             <button type="button" class="resetbtn" id="resetBtn" data-i18n="reset.btn">Reset to defaults</button>
@@ -168,16 +155,25 @@
   <section id="itin">
     <div class="shead">
       <span class="n">02</span><h2 data-i18n="sec.itin">Itinerary</h2>
-      <span class="sub" data-i18n-html="itin.sub">8 days total — 7 hotel nights + 1 day together. Re-flows with the night split. <span style="color:var(--kl)">amber = KL</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span> · <span style="color:var(--red)">red = together, then part ways</span></span>
+      <span class="sub" data-i18n-html="itin.sub">8 days total — 7 hotel nights + 1 day together. Re-flows with the night split. <span style="color:var(--kl)">amber = KL</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span></span>
     </div>
-    <div class="days" id="days"></div>
-    <div class="depart" id="departStrip"></div>
+    <div class="daysDetail" id="daysDetail"></div>
+  </section>
+
+
+  <!-- ===================== TRIP DETAILS ===================== -->
+  <section id="details">
+    <div class="shead">
+      <span class="n">03</span><h2 data-i18n="sec.details">Trip details &amp; essentials</h2>
+      <span class="sub" data-i18n="details.sub">Flights, transport, stays, dining, experiences &amp; know-before-you-go.</span>
+    </div>
+    <div class="detailgrid" id="detailgrid"></div>
   </section>
 
   <!-- ===================== KL AHP ===================== -->
   <section id="ahp-kl">
     <div class="shead">
-      <span class="n">03</span><h2 data-i18n="sec.ahpKL">AHP — Kuala Lumpur</h2>
+      <span class="n">04</span><h2 data-i18n="sec.ahpKL">AHP — Kuala Lumpur</h2>
       <span class="sub" data-i18n-html="ahpKL.sub">Bar length = weighted score (0–10). Segments show <em>why</em>.</span>
     </div>
     <div class="ahp kl">
@@ -189,7 +185,7 @@
   <!-- ===================== PENANG AHP ===================== -->
   <section id="ahp-pg">
     <div class="shead">
-      <span class="n">04</span><h2 data-i18n="sec.ahpPG">AHP — Kota Kinabalu</h2>
+      <span class="n">05</span><h2 data-i18n="sec.ahpPG">AHP — Kota Kinabalu</h2>
       <span class="sub" data-i18n-html="ahpPG.sub">Same weights. Island resorts win on luxury but lose Location &amp; Value — see note.</span>
     </div>
     <div class="ahp pg">
@@ -200,12 +196,12 @@
 
   <!-- ===================== METHOD ===================== -->
   <section id="method">
-    <div class="shead"><span class="n">05</span><h2 data-i18n="sec.method">Method &amp; caveats</h2></div>
+    <div class="shead"><span class="n">06</span><h2 data-i18n="sec.method">Method &amp; caveats</h2></div>
     <div class="notes">
       <h3 data-i18n="method.h3">Luxury-tilted weights · pairwise AHP · CR = 0.004 (consistent)</h3>
       <div class="wgrid" id="wgrid"></div>
-      <p data-i18n-html="method.p1"><b style="color:var(--ink)">Core + alpha.</b> Taeyang's ₩2,000,000 core (≈ RM6,600) covers roughly one flagship, not two. The AHP winners — <span style="color:var(--kl)">Mandarin Oriental</span> (KLCC, ~RM950) + <span style="color:var(--pg)">Shangri-La Tanjung Aru</span> (~RM800) — run ~RM10,400 all-in for two over 7 nights / 8 days together; the ~RM3,800 gap is Taeyang's alpha. Swap MO for <span style="color:var(--kl)">Park Hyatt</span> (Merdeka 118, ~RM1,600) only for the ultra-splurge — it is AHP #3 here and lifts the KL bill ~70%.</p>
-      <p data-i18n-html="method.p2"><b style="color:var(--ink)">Island, beach, or city?</b> Re-weighting cut Value to 0.10 and kept Location at 0.16, so the verdict still favours the mainland: <span style="color:var(--pg)">Tanjung Aru</span> is the one pick that is genuinely beachfront <em>and</em> 15 min from town and the airport. <span style="color:var(--pg)">Gaya Island</span> &amp; <span style="color:var(--pg)">Bunga Raya</span> edge it on raw luxury but lose on access (boat-only) and value.</p>
+      <p id="methodP1"><b style="color:var(--ink)">Core + alpha.</b> Taeyang's ₩2,000,000 core (≈ RM6,600) covers roughly one flagship, not two. The AHP winners — <span style="color:var(--kl)">Mandarin Oriental</span> (KLCC, ~RM950) + <span style="color:var(--pg)">Shangri-La Tanjung Aru</span> (~RM800) — run ~RM10,400 all-in for two over 7 nights / 8 days together; the ~RM3,800 gap is Taeyang's alpha. Swap MO for <span style="color:var(--kl)">Park Hyatt</span> (Merdeka 118, ~RM1,600) only for the ultra-splurge — it is AHP #3 here and lifts the KL bill ~70%.</p>
+      <p id="methodP2"><b style="color:var(--ink)">Island, beach, or city?</b> Re-weighting cut Value to 0.10 and kept Location at 0.16, so the verdict still favours the mainland: <span style="color:var(--pg)">Tanjung Aru</span> is the one pick that is genuinely beachfront <em>and</em> 15 min from town and the airport. <span style="color:var(--pg)">Gaya Island</span> &amp; <span style="color:var(--pg)">Bunga Raya</span> edge it on raw luxury but lose on access (boat-only) and value.</p>
       <p data-i18n-html="method.p3"><b>Factcheck flags:</b> Gaya Island &amp; Bunga Raya are boat-access only from Jesselton Point (~15–20 min) — no walk-in or late arrivals. Nexus Karambunai is ~45 min out, effectively stay-put. Park Hyatt KL is in Merdeka 118 (not KLCC) and budget-breaking at ~RM1,600. City hotels (Hyatt Centric, Le Méridien, Hilton) have rooftop pools but no swimmable beach.</p>
       <p data-i18n-html="method.weather"><b style="color:var(--ink)">Weather &amp; packing.</b> July in KL &amp; Kota Kinabalu: hot (28–33°C), humid, short afternoon downpours; Sabah seas are usually calm — good for island hopping. Pack: linen/cotton, swimwear &amp; reef-safe sunscreen, rain shell, insect repellent, walking shoes, Type-G adapter.</p>
       <div class="pillbar">

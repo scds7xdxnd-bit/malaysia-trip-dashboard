@@ -62,6 +62,18 @@ function recalcWeights(arr, origWeights, curWeights){
   });
 }
 
+function computeRanked(arr, ratesMap, weights){
+  var adj = recalcWeights(arr, origCritWts, weights).map(function(h){
+    var ov = ratesMap ? ratesMap[h.k] : null;
+    if(ov != null && ov > 0 && ov !== h.rate){
+      return recalcHotel(h, h.rate, ov, weights['V']);
+    }
+    return h;
+  });
+  adj.sort(function(a, b){ return b.score - a.score; });
+  return adj;
+}
+
 /* ---------- budget console ---------- */
 function renderBudget(){
   const kln = st.split, pgn = NIGHTS - kln;
@@ -71,8 +83,22 @@ function renderBudget(){
   const flightsMYR = (+st.flightOut || 0) + (+st.flightBack || 0);
   const klRate = (st.klRate != null && st.klRate > 0) ? st.klRate : klh.rate;
   const pgRate = (st.pgRate != null && st.pgRate > 0) ? st.pgRate : pgh.rate;
-  const klCost = klRate * kln, pgCost = pgRate * pgn, dailyCost = st.daily * NIGHTS;
-  const total = klCost + pgCost + flightsMYR + dailyCost;
+  const days = NIGHTS + 1;
+  const klCost = klRate * kln, pgCost = pgRate * pgn;
+
+  var itineraryCost = 0;
+  for(var i = 0; i < NIGHTS; i++){
+    var isLast = (i === NIGHTS - 1);
+    var isKLPlan = isLast || (i < kln - 1);
+    var plan;
+    if(isLast) plan = KL_PLAN[Math.min(3, KL_PLAN.length - 1)];
+    else if(isKLPlan) plan = KL_PLAN[Math.min(i, KL_PLAN.length - 1)];
+    else plan = PG_PLAN[Math.min(i - (kln - 1), PG_PLAN.length - 1)];
+    itineraryCost += +(plan.costPerPax || 0);
+  }
+  itineraryCost += +(DEPART_PLAN.costPerPax || 0);
+  var dailyCost = itineraryCost * PAX;
+  var total = klCost + pgCost + flightsMYR + dailyCost;
   const remain = budgetMYR - total, pct = budgetMYR > 0 ? total / budgetMYR : 0;
 
   var klRI = document.getElementById('klRateInp');
@@ -82,18 +108,14 @@ function renderBudget(){
   document.getElementById('klArea').textContent = L(klh.area);
   document.getElementById('pgArea').textContent = L(pgh.area);
   document.getElementById('splitTxt').textContent = t('dyn.split', {kl: kln, pg: pgn});
-  document.getElementById('dailyTxt').textContent = t('dyn.perDay', {n: st.daily});
+  var perDay = Math.round(itineraryCost / days);
+  document.getElementById('dailyTxt').textContent = fmtMYR(dailyCost);
 
   var hdrEl = document.getElementById('budgetHdr');
   if(hdrEl) hdrEl.textContent = fmtMYR(budgetMYR);
 
   var tlEl = document.getElementById('budgetTotalLine');
   if(tlEl) tlEl.textContent = t('budget.totalLine', {n: Math.round(budgetMYR).toLocaleString()});
-
-  var fxN = document.getElementById('fxNote');
-  if(fxN && (!fxN.dataset.set || fxN.dataset.set !== '1')){
-    fxN.textContent = ''; fxN.dataset.set = '0';
-  }
 
   const gf = document.getElementById('gfill');
   gf.style.width = Math.min(Math.max(pct, 0), 1) * 100 + '%';
@@ -115,12 +137,12 @@ function renderBudget(){
     ['var(--kl)',  klh.name,                t('bd.nightsCalc', {rate: klRate, n: kln}), klCost],
     ['var(--pg)',  pgh.name,                t('bd.nightsCalc', {rate: pgRate, n: pgn}), pgCost],
     ['var(--dim)', t('bd.flightsOut'),
-      t('bd.flightsCalc') + ' · <a href="https://www.google.com/travel/flights?q=KUL+to+PEN+on+2026-07-20" target="_blank" rel="noopener" class="verifylink">' + t('links.verify') + '</a>',
+      t('bd.flightsCalc') + ' · <a href="https://www.google.com/travel/flights?q=KUL+to+BKI+on+2026-07-19" target="_blank" rel="noopener" class="verifylink">' + t('links.verify') + '</a>',
       (+st.flightOut || 0)],
     ['var(--dim)', t('bd.flightsBack'),
-      t('bd.flightsCalc') + ' · <a href="https://www.google.com/travel/flights?q=PEN+to+KUL+on+2026-07-22" target="_blank" rel="noopener" class="verifylink">' + t('links.verify') + '</a>',
+      t('bd.flightsCalc') + ' · <a href="https://www.google.com/travel/flights?q=BKI+to+KUL+on+2026-07-22" target="_blank" rel="noopener" class="verifylink">' + t('links.verify') + '</a>',
       (+st.flightBack || 0)],
-    ['var(--mut)', t('bd.food'),            t('bd.foodCalc', {daily: st.daily}),         dailyCost],
+    ['var(--mut)', t('bd.food'),            t('bd.foodCalc', {pax: PAX, perDay: perDay, n: days}), dailyCost],
   ].map(r => `<div class="brow"><span class="dot" style="background:${r[0]}"></span>
      <span class="name">${r[1]}</span><span class="calc">${r[2]}</span>
      <span class="amt">${fmtMYR(r[3])}</span></div>`).join('');
@@ -129,51 +151,118 @@ function renderBudget(){
   var klBL = document.getElementById('klBookLink');
   var pgBL = document.getElementById('pgBookLink');
   if(klBL){
+    var klFrontEndDay = 16 + (kln - 1); // front KL segment checkout, split-aware
     klBL.href = 'https://www.booking.com/searchresults.html' +
       '?ss=' + encodeURIComponent(klh.name + ' Kuala Lumpur') +
-      '&checkin=2026-07-16&checkout=2026-07-' + (16 + kln) +
+      '&checkin=2026-07-16&checkout=2026-07-' + klFrontEndDay +
       '&group_adults=2&no_rooms=1';
   }
   if(pgBL){
     pgBL.href = 'https://www.booking.com/searchresults.html' +
-      '?ss=' + encodeURIComponent(pgh.name + ' Penang') +
-      '&checkin=2026-07-' + (16 + kln) + '&checkout=2026-07-23' +
+      '?ss=' + encodeURIComponent(pgh.name + ' Kota Kinabalu') +
+      '&checkin=2026-07-19&checkout=2026-07-22' +
       '&group_adults=2&no_rooms=1';
   }
+  window.BUDGET_CALC = {total:total, budgetMYR:budgetMYR, remain:remain,
+    klRate:klRate, pgRate:pgRate, kln:kln, pgn:pgn, days:days};
 }
 
-/* ---------- itinerary ---------- */
+/* ---------- itinerary ----------
+   Hop-back, not contiguous: fly KUL->BKI early, so the night of the
+   outbound flight day is already in KK; fly BKI->KUL on the return day,
+   so that night is back in KL, not KK. Structure is always
+   [front KL nights] + [KK nights] + [1 back-KL return night] —
+   the trailing KL night is fixed by the actual return flight, regardless
+   of where the split slider sits. KL_PLAN[3] is written specifically as
+   that "return to KL" night, so it's used directly, not via a running
+   index that would drift past it on other slider positions. */
 function renderItin(){
   const kln = st.split, pgn = NIGHTS - kln;
-  let html = '';
+  const frontKL = kln - 1;
+  let detailHtml = '';
   for(let i = 0; i < NIGHTS; i++){
-    const isKL = i < kln, city = isKL ? 'kl' : 'pg';
-    const idx = isKL ? i : (i - kln);
-    const plan = L(isKL ? KL_PLAN[Math.min(idx, KL_PLAN.length - 1)]
-                        : PG_PLAN[Math.min(idx, PG_PLAN.length - 1)]);
-    const flight = (!isKL && idx === 0) ? `<span class="flag">${t('dyn.flyFlag')}</span>` : '';
-    const returnFlight = (i === NIGHTS - 1) ? `<span class="flag">${t('dyn.flyBack')}</span>` : '';
-    html += `<div class="day ${city}">
-      <div class="dh"><span class="nite">${t('dyn.night', {n: i + 1})}</span><span class="city">${isKL ? t('dyn.cityKL') : t('dyn.cityPG')}</span></div>
-      <div class="date">${L(DATES[i])}</div>
-      <div class="plan">${plan}</div>${flight}${returnFlight}
-    </div>`;
+    const isLast = (i === NIGHTS - 1);
+    const isKL = isLast || (i < frontKL);
+    const city = isKL ? 'kl' : 'pg';
+    let plan;
+    if(isLast){
+      plan = KL_PLAN[Math.min(3, KL_PLAN.length - 1)];
+    } else if(isKL){
+      plan = KL_PLAN[Math.min(i, KL_PLAN.length - 1)];
+    } else {
+      plan = PG_PLAN[Math.min(i - frontKL, PG_PLAN.length - 1)];
+    }
+    var title = L(plan.title);
+
+    /* detailed day card */
+    var flightBlock = '';
+    var flightObj = null;
+    if(!isKL && i === frontKL) flightObj = FLIGHT_OUT;
+    else if(isLast) flightObj = FLIGHT_BACK;
+    if(flightObj){
+      var fq = flightObj.q || '';
+      var furl = 'https://www.google.com/travel/flights?q=' + fq;
+      flightBlock = '<div class="seg"><span class="seglab">' + t('flight.route') + '</span><span class="segtxt"><b>' + L(flightObj.route) + '</b></span></div>' +
+        '<div class="seg"><span class="seglab">' + t('flight.airline') + '</span><span class="segtxt">' + L(flightObj.airline) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('flight.terminal') + '</span><span class="segtxt">' + L(flightObj.terminal) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('flight.duration') + '</span><span class="segtxt">' + L(flightObj.duration) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('flight.cost') + '</span><span class="segtxt">' + fmtMYR(isLast ? st.flightBack : st.flightOut) + '</span></div>' +
+        '<a class="verifylink" href="' + furl + '" target="_blank" rel="noopener">' + t('links.verify') + '</a>';
+    }
+    var mealsHtml = '<div class="seg"><span class="seglab">' + t('day.meals') + '</span><span class="segtxt">' +
+      '<span class="mealtag">' + t('day.breakfast') + '</span> ' + L(plan.meals.breakfast) + '<br>' +
+      '<span class="mealtag">' + t('day.lunch') + '</span> ' + L(plan.meals.lunch) + '<br>' +
+      '<span class="mealtag">' + t('day.dinner') + '</span> ' + L(plan.meals.dinner) +
+    '</span></div>';
+    var costHtml = '<div class="dday-cost"><span>' + t('day.cost') + '</span> ' + L(plan.cost) + '</div>';
+    detailHtml += '<div class="dday ' + city + '">' +
+      '<button class="dday-head" type="button" aria-expanded="false">' +
+        '<span class="dday-meta">' + t('dyn.night', {n: i + 1}) + ' · ' + (isKL ? t('dyn.cityKL') : t('dyn.cityPG')) + ' · ' + L(DATES[i]) + '</span>' +
+        '<span class="dday-title">' + title + '</span>' +
+        '<span class="dday-toggle">' + t('day.toggleShow') + '</span>' +
+      '</button>' +
+      '<div class="dday-body" hidden>' +
+        '<div class="seg"><span class="seglab">' + t('day.morning') + '</span><span class="segtxt">' + L(plan.morning) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('day.afternoon') + '</span><span class="segtxt">' + L(plan.afternoon) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('day.evening') + '</span><span class="segtxt">' + L(plan.evening) + '</span></div>' +
+        mealsHtml +
+        (flightBlock ? '<div class="dday-flight">' + t('day.flight') + flightBlock + '</div>' : '') +
+        '<div class="seg"><span class="seglab">' + t('day.transport') + '</span><span class="segtxt">' + L(plan.transport) + '</span></div>' +
+        '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
+        costHtml +
+      '</div>' +
+    '</div>';
   }
-  document.getElementById('days').innerHTML = html;
-  document.getElementById('departStrip').innerHTML = t('dyn.depart');
+  /* depart day detail */
+  var departPlan = DEPART_PLAN;
+  var departDetailHtml = '<div class="dday split">' +
+    '<button class="dday-head" type="button" aria-expanded="false">' +
+      '<span class="dday-meta">' + t('dyn.day', {n: NIGHTS + 1}) + ' · ' + t('dyn.cityDepart') + ' · ' + L(DEPART_DATE) + '</span>' +
+      '<span class="dday-title">' + L(departPlan.title) + '</span>' +
+      '<span class="dday-toggle">' + t('day.toggleShow') + '</span>' +
+    '</button>' +
+    '<div class="dday-body" hidden>' +
+      '<div class="seg"><span class="seglab">' + t('day.morning') + '</span><span class="segtxt">' + L(departPlan.morning) + '</span></div>' +
+      '<div class="seg"><span class="seglab">' + t('day.afternoon') + '</span><span class="segtxt">' + L(departPlan.afternoon) + '</span></div>' +
+      '<div class="seg"><span class="seglab">' + t('day.evening') + '</span><span class="segtxt">' + L(departPlan.evening) + '</span></div>' +
+      '<div class="seg"><span class="seglab">' + t('day.meals') + '</span><span class="segtxt">' +
+        '<span class="mealtag">' + t('day.breakfast') + '</span> ' + L(departPlan.meals.breakfast) + '<br>' +
+        '<span class="mealtag">' + t('day.lunch') + '</span> ' + L(departPlan.meals.lunch) + '<br>' +
+        '<span class="mealtag">' + t('day.dinner') + '</span> ' + L(departPlan.meals.dinner) +
+      '</span></div>' +
+      '<div class="seg"><span class="seglab">' + t('day.transport') + '</span><span class="segtxt">' + L(departPlan.transport) + '</span></div>' +
+      '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(departPlan.tips) + '</span></div>' +
+      '<div class="dday-cost"><span>' + t('day.cost') + '</span> ' + L(departPlan.cost) + '</div>' +
+    '</div>' +
+  '</div>';
+  detailHtml += departDetailHtml;
+
+  document.getElementById('daysDetail').innerHTML = detailHtml;
 }
 
 /* ---------- AHP bars ---------- */
-function renderBars(containerId, legendId, arr, pickKey, pickRate, curWeights){
-  var curVWeight = curWeights['V'];
-  var weightAdjArr = recalcWeights(arr, origCritWts, curWeights);
-  var adjArr = weightAdjArr.map(function(h){
-    if(h.k === pickKey && pickRate != null && pickRate > 0 && pickRate !== h.rate){
-      return recalcHotel(h, h.rate, pickRate, curVWeight);
-    }
-    return h;
-  });
-  adjArr.sort(function(a, b){ return b.score - a.score; });
+function renderBars(containerId, legendId, arr, pickKey, ratesMap, curWeights){
+  var adjArr = computeRanked(arr, ratesMap, curWeights);
   var max = Math.max.apply(null, adjArr.map(function(h){ return h.score; }));
   document.getElementById(legendId).innerHTML = CRIT.map(c =>
     `<span class="lg"><i style="background:${c.c}"></i>${t('crit.' + c.key)} · ${curWeights[c.key]}</span>`).join('');
@@ -197,8 +286,8 @@ function renderBars(containerId, legendId, arr, pickKey, pickRate, curWeights){
 function renderAHP(){
   var w = st.weights || {};
   CRIT.forEach(function(c){ if(!(c.key in w)) w[c.key] = c.w; });
-  renderBars('barsKL', 'legendKL', KL, st.kl, st.klRate, w);
-  renderBars('barsPG', 'legendPG', PG, st.pg, st.pgRate, w);
+  renderBars('barsKL', 'legendKL', KL, st.kl, st.klRates, w);
+  renderBars('barsPG', 'legendPG', PG, st.pg, st.pgRates, w);
 }
 
 /* ---------- criteria weights footer ---------- */
@@ -210,10 +299,150 @@ function renderWeights(){
   ).join('');
 }
 
+function renderMethod(){
+  var w = st.weights || {}; CRIT.forEach(function(c){ if(!(c.key in w)) w[c.key]=c.w; });
+  var bc = window.BUDGET_CALC || {};
+  var klRanked = computeRanked(KL, st.klRates, w);
+  var pgRanked = computeRanked(PG, st.pgRates, w);
+  var klWin = klRanked[0], pgWin = pgRanked[0], pgRunner = pgRanked[1];
+  var klPick = find(KL, st.kl), pgPick = find(PG, st.pg);
+  var klRate = bc.klRate, pgRate = bc.pgRate;
+
+  var klSplurge = null, maxRate = -1;
+  KL.forEach(function(h){
+    var r = effRate(KL, st.klRates, h.k);
+    if(h.k !== st.kl && r > maxRate){ maxRate = r; klSplurge = h; }
+  });
+  var splurgePct = (klRate > 0) ? Math.round((maxRate - klRate) / klRate * 100) : 0;
+
+  var src = st.pYou || {amt:0, ccy:'MYR'};
+  var amtStr = (+src.amt || 0).toLocaleString();
+  var coreSrc = src.ccy === 'KRW' ? ('₩' + amtStr)
+              : src.ccy === 'CNY' ? ('¥' + amtStr)
+              : ('RM ' + amtStr);
+
+  var alphaClause = (bc.remain < 0)
+    ? t('method.alphaGap',  {n: fmtMYR(Math.abs(bc.remain))})
+    : t('method.underCore', {n: fmtMYR(bc.remain)});
+
+  var leaderNote = (klPick.k === klWin.k && pgPick.k === pgWin.k)
+    ? t('method.bothLead')
+    : t('method.leadersAre', {kl: klWin.name, kls: klWin.score.toFixed(2),
+                              pg: pgWin.name, pgs: pgWin.score.toFixed(2)});
+
+  document.getElementById('methodP1').innerHTML = t('method.p1', {
+    coreSrc: coreSrc, core: fmtMYR(bc.budgetMYR),
+    klPick: klPick.name, klRate: klRate, pgPick: pgPick.name, pgRate: pgRate,
+    total: fmtMYR(bc.total), nights: NIGHTS, days: bc.days,
+    alphaClause: alphaClause, leaderNote: leaderNote,
+    klSplurge: klSplurge ? klSplurge.name : '', klSplurgeRate: maxRate, splurgePct: splurgePct
+  });
+  document.getElementById('methodP2').innerHTML = t('method.p2', {
+    wV: w.V, wLo: w.Lo, wL: w.L,
+    pgWin: pgWin.name, pgWinScore: pgWin.score.toFixed(2),
+    pgRunner: pgRunner.name, pgRunnerScore: pgRunner.score.toFixed(2)
+  });
+}
+
+function renderDetails(){
+  var bc = window.BUDGET_CALC || {};
+  var kln = st.split, pgn = NIGHTS - kln, frontKL = kln - 1;
+  var klh = find(KL, st.kl), pgh = find(PG, st.pg);
+  var klRate = bc.klRate, pgRate = bc.pgRate;
+  var klTotal = klRate * kln, pgTotal = pgRate * pgn;
+
+  var klFrontEnd = 16 + frontKL;
+  var klDateLabel = 'Jul 16' + (frontKL === 1 ? '' : '-' + klFrontEnd) + ' & Jul 22–23';
+  var pgStart = 16 + frontKL, pgEnd = 16 + frontKL + pgn - 1;
+  var pgDateLabel = 'Jul ' + pgStart + '-' + pgEnd;
+
+  var klBookUrl = 'https://www.booking.com/searchresults.html?ss=' +
+    encodeURIComponent(klh.name + ' Kuala Lumpur') +
+    '&checkin=2026-07-16&checkout=2026-07-' + klFrontEnd + '&group_adults=2&no_rooms=1';
+  var pgBookUrl = 'https://www.booking.com/searchresults.html?ss=' +
+    encodeURIComponent(pgh.name + ' Kota Kinabalu') +
+    '&checkin=2026-07-' + pgStart + '&checkout=2026-07-' + (pgStart + pgn - 1) + '&group_adults=2&no_rooms=1';
+
+  function card(headingKey, body){ return '<div class="detailcard"><h4>' + t(headingKey) + '</h4>' + body + '</div>'; }
+  function dot(city){ return city ? '<span class="citydot ' + city + '">●</span>' : ''; }
+
+  /* Flights — stacked */
+  var flights = '';
+  FLIGHTS_REF.forEach(function(f, i){
+    var url = 'https://www.google.com/travel/flights?q=' + (f.q || '');
+    var flightCost = i === 0 ? (+st.flightOut || 0) : (+st.flightBack || 0);
+    flights += '<div class="dc-row" style="display:block">' +
+      '<div class="dc-line head">' + L(f.route) + '</div>' +
+      '<div class="dc-line">' + L(f.date) + '</div>' +
+      '<div class="dc-line">' + L(f.airline) + '</div>' +
+      '<div class="dc-line">' + L(f.terminal) + '</div>' +
+      '<div class="dc-line">' + L(f.duration) + ' · ' + fmtMYR(flightCost) +
+        ' <a class="verifylink" href="' + url + '" target="_blank" rel="noopener">' + t('links.verify') + '</a></div>' +
+    '</div>';
+  });
+
+  /* Transport */
+  var transport = '';
+  TRANSPORT_REF.forEach(function(tr){
+    transport += '<div class="dc-row"><div class="dc-main"><div class="dc-name">' + L(tr.name) + '</div></div>' +
+      '<div class="dc-cost">' + L(tr.cost) + '</div></div>';
+  });
+
+  /* Stays (live) */
+  function stay(h, dotCls, dateLabel, rate, nights, total, url){
+    return '<div class="staycard"><span class="staydot ' + dotCls + '">●</span>' +
+      '<span class="sc-name">' + h.name + '</span> ' + h.star + '★' +
+      '<div class="sc-area">' + L(h.area) + '</div>' +
+      '<div class="sc-line">' + dateLabel + '</div>' +
+      '<div class="sc-line">' + t('stays.guests') + ' · ' + t('stays.nights', {n: nights}) + '</div>' +
+      '<div class="sc-line">RM' + rate + '/nt · <span class="sc-cost">' + fmtMYR(total) + '</span></div>' +
+      '<a class="booklink ' + dotCls + '" href="' + url + '" target="_blank" rel="noopener">' + t('links.book') + '</a></div>';
+  }
+  var stays = stay(klh, 'kl', klDateLabel, klRate, kln, klTotal, klBookUrl) +
+              stay(pgh, 'pg', pgDateLabel, pgRate, pgn, pgTotal, pgBookUrl);
+
+  /* Dining + Experiences share one renderer */
+  function refList(arr){
+    var html = '';
+    arr.forEach(function(x){
+      html += '<div class="dc-row"><div class="dc-main">' +
+        '<div class="dc-name">' + L(x.name) + dot(x.city) + '</div>' +
+        (x.sub ? '<div class="dc-sub">' + L(x.sub) + '</div>' : '') +
+        (x.note ? '<div class="dc-note">' + L(x.note) + '</div>' : '') +
+      '</div><div class="dc-cost">' + L(x.cost) + '</div></div>';
+    });
+    return html;
+  }
+
+  /* Essentials */
+  var ess = '';
+  ESSENTIALS_REF.forEach(function(e){
+    ess += '<div class="dc-erow"><span class="dc-label">' + L(e.label) + '</span>' +
+      '<span class="dc-value">' + L(e.value) + '</span></div>';
+  });
+
+  /* Packing + Checklist */
+  function checks(arr){
+    return arr.map(function(it){ return '<div class="dc-check"><span class="gly">▢</span><span>' + L(it) + '</span></div>'; }).join('');
+  }
+
+  document.getElementById('detailgrid').innerHTML =
+    card('detail.flights', flights) +
+    card('detail.transport', transport) +
+    card('detail.stays', stays) +
+    card('detail.dining', refList(DINING_REF)) +
+    card('detail.experiences', refList(EXPERIENCES_REF)) +
+    card('detail.essentials', ess) +
+    card('detail.packing', checks(PACKING_REF)) +
+    card('detail.checklist', checks(CHECKLIST_REF));
+}
+
 /* ---------- render everything ---------- */
 function renderAll(){
   renderBudget();
   renderItin();
   renderAHP();
   renderWeights();
+  renderMethod();
+  renderDetails();
 }
