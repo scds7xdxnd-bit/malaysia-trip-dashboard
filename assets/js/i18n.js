@@ -38,6 +38,7 @@ const I18N = (function(){
 
       'sec.itin':         'Itinerary',
       'itin.sub':         '7 days · Jul 16–22 · fully booked. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span>',
+      'itin.hint':        'Click 📍 to open location in Google Maps',
 
       'sec.expenses':     'Expense summary',
       'expenses.sub':     'On-trip spending breakdown by category · total RM 4,009 · plus prepaid RM 10,920 = RM 14,929',
@@ -119,6 +120,7 @@ const I18N = (function(){
 
       'sec.itin':         '行程',
       'itin.sub':         '7 天 · 7月16–22 · 已预订。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span>',
+      'itin.hint':        '点击 📍 在 Google Maps 中打开位置',
 
       'sec.expenses':     '开支汇总',
       'expenses.sub':     '行程内按类别开支 · 共 RM 4,009 · 加预付 RM 10,920 = RM 14,929',
