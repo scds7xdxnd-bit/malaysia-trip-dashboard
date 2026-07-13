@@ -6,18 +6,43 @@
    ============================================================ */
 
 function fmtMYR(n){ return 'RM ' + Math.round(n).toLocaleString(); }
-/* exact amount — keeps cents on actual payments (RM 4,631.36) */
 function fmtMYRexact(n){
   return 'RM ' + n.toLocaleString('en-US', {minimumFractionDigits: (n % 1 ? 2 : 0), maximumFractionDigits: 2});
 }
 
-/* ---------- budget & payments (static — actuals) ---------- */
+/* ---------- activity type icon map ---------- */
+var TYPE_ICON = {};
+TYPE_ICON[TYPE.FLIGHT]      = '\u2708\uFE0F';
+TYPE_ICON[TYPE.TRANSPORT]   = '\uD83D\uDE97';
+TYPE_ICON[TYPE.MEAL]        = '\uD83C\uDF74';
+TYPE_ICON[TYPE.SIGHTSEEING] = '\uD83D\uDCF7';
+TYPE_ICON[TYPE.STAY]        = '\uD83C\uDFE8';
+TYPE_ICON[TYPE.LEISURE]     = '\u2615';
+TYPE_ICON[TYPE.SHOPPING]    = '\uD83D\uDECD\uFE0F';
+
+/* ---------- venue image thumbnails ---------- */
+var VN_GRADIENT = {};
+VN_GRADIENT[TYPE.FLIGHT]      = 'linear-gradient(135deg,#667eea,#764ba2)';
+VN_GRADIENT[TYPE.TRANSPORT]   = 'linear-gradient(135deg,#4facfe,#00f2fe)';
+VN_GRADIENT[TYPE.MEAL]        = 'linear-gradient(135deg,#f5af19,#f12711)';
+VN_GRADIENT[TYPE.SIGHTSEEING] = 'linear-gradient(135deg,#11998e,#38ef7d)';
+VN_GRADIENT[TYPE.STAY]        = 'linear-gradient(135deg,#f093fb,#f5576c)';
+VN_GRADIENT[TYPE.LEISURE]     = 'linear-gradient(135deg,#c79060,#8B6914)';
+VN_GRADIENT[TYPE.SHOPPING]    = 'linear-gradient(135deg,#a18cd1,#fbc2eb)';
+
+function vnThumb(type, mapUrl){
+  if(!mapUrl) return '';
+  var grad = VN_GRADIENT[type] || 'linear-gradient(135deg,#667eea,#764ba2)';
+  var icon = TYPE_ICON[type] || '\uD83D\uDCCD';
+  return '<a class="vnthumb" href="' + mapUrl + '" target="_blank" rel="noopener" style="background:' + grad + '" title="' + t('day.mapLink') + '"><span>' + icon + '</span></a>';
+}
+
+/* ---------- budget & payments (static - actuals) ---------- */
 function renderBudget(){
-  /* left column: fund + prepaid bookings */
   var fund = '';
   FUND_ROWS.forEach(function(r){
     fund += '<div class="brow"><span class="dot" style="background:var(--green)"></span>' +
-      '<span class="name">' + L(r.who) + ' · ' + r.src + '</span>' +
+      '<span class="name">' + L(r.who) + ' &middot; ' + r.src + '</span>' +
       '<span class="calc">' + r.rate + '</span>' +
       '<span class="amt">' + fmtMYR(r.myr) + '</span></div>';
   });
@@ -33,7 +58,6 @@ function renderBudget(){
   var hdrEl = document.getElementById('budgetHdr');
   if(hdrEl) hdrEl.textContent = fmtMYR(FUND_TOTAL);
 
-  /* right column: gauge + verdict + full breakdown */
   var pct = FUND_TOTAL > 0 ? SPEND_TOTAL / FUND_TOTAL : 0;
   var remain = FUND_TOTAL - SPEND_TOTAL;
 
@@ -61,30 +85,50 @@ function renderBudget(){
     '<div class="bd-group">' + t('pay.ontrip') + '</div>' + rows(SPEND_TRIP, fmtMYR);
 }
 
-/* ---------- itinerary — 10 fixed booked days ---------- */
+/* ---------- itinerary - 10 days with enhanced details ---------- */
 function renderItin(){
   var html = '';
   ITIN.forEach(function(plan, i){
     var city = plan.city;
     var cityLabel = city === 'kl' ? t('dyn.cityKL') : city === 'pg' ? t('dyn.cityPG') : t('dyn.cityDepart');
 
+    /* flight block with verify link */
     var flightBlock = '';
     if(plan.flight){
-      flightBlock = '<div class="dday-flight">' + t('day.flight') +
+      flightBlock = '<div class="dday-flight">' +
+        '<div class="dday-flight-head">' + t('day.flight') + '</div>' +
         '<div class="seg"><span class="seglab">' + t('flight.route') + '</span><span class="segtxt"><b>' + L(plan.flight.route) + '</b></span></div>' +
         '<div class="seg"><span class="seglab">' + t('flight.airline') + '</span><span class="segtxt">' + L(plan.flight.airline) + '</span></div>' +
         '<div class="seg"><span class="seglab">' + t('flight.time') + '</span><span class="segtxt">' + L(plan.flight.time) + '</span></div>' +
-        '<div class="seg"><span class="seglab">' + t('flight.ref') + '</span><span class="segtxt">' + L(plan.flight.ref) + '</span></div>' +
-      '</div>';
+        '<div class="seg"><span class="seglab">' + t('flight.ref') + '</span><span class="segtxt">' + L(plan.flight.ref) + '</span></div>';
+      if(plan.flight.verifyUrl){
+        flightBlock += '<a class="verifylink" href="' + plan.flight.verifyUrl + '" target="_blank" rel="noopener">\u2705 ' + t('day.verify') + '</a>';
+      }
+      flightBlock += '</div>';
     }
 
+    /* schedule entries with type icons, costs, map links, confirm numbers */
     var schedHtml = plan.sched.map(function(row){
-      return '<div class="seg"><span class="seglab mono">' + row.t + '</span><span class="segtxt">' + L(row.txt) + '</span></div>';
+      var icon = TYPE_ICON[row.type] || '';
+      var doneMark = row.done ? ' <span class="idcheck" title="confirmed">\u2705</span>' : '';
+      var costBadge = row.cost ? ' <span class="idcost">' + row.cost + '</span>' : '';
+      var mapLink = row.mapUrl ? ' <a class="imap" href="' + row.mapUrl + '" target="_blank" rel="noopener" title="' + t('day.mapLink') + '">\uD83D\uDCCD</a>' : '';
+      var confirmBadge = row.confirm ? ' <span class="iconfirm">#' + (typeof row.confirm === 'string' ? row.confirm : L(row.confirm)) + '</span>' : '';
+
+      var doneClass = row.done ? ' seg-done' : '';
+      return '<div class="seg' + doneClass + '">' +
+        vnThumb(row.type, row.mapUrl) +
+        '<div class="seg-inner"><span class="seglab mono">' +
+        icon + ' ' + row.t + '</span><span class="segtxt">' + L(row.txt) +
+        doneMark + costBadge + confirmBadge + mapLink + '</span></div></div>';
     }).join('');
+
+    /* day map link */
+    var dayMapLink = plan.mapUrl ? '<a class="dday-map" href="' + plan.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD ' + t('day.mapLink') + '</a>' : '';
 
     html += '<div class="dday ' + city + '">' +
       '<button class="dday-head" type="button" aria-expanded="false">' +
-        '<span class="dday-meta">' + t('dyn.day', {n: i + 1}) + ' · ' + cityLabel + ' · ' + L(plan.date) + '</span>' +
+        '<span class="dday-meta">' + t('dyn.day', {n: i + 1}) + ' &middot; ' + cityLabel + ' &middot; ' + L(plan.date) + '</span>' +
         '<span class="dday-title">' + L(plan.title) + '</span>' +
         '<span class="dday-toggle">' + t('day.toggleShow') + '</span>' +
       '</button>' +
@@ -92,19 +136,81 @@ function renderItin(){
         schedHtml +
         flightBlock +
         '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
-        '<div class="dday-cost"><span>' + t('day.cost') + '</span> ' + L(plan.cost) + '</div>' +
+        '<div class="dday-cost"><span>' + t('day.cost') + '</span><span>' + L(plan.cost) + '</span>' + dayMapLink + '</div>' +
       '</div>' +
     '</div>';
   });
   document.getElementById('daysDetail').innerHTML = html;
 }
 
+/* ---------- expense summary section ---------- */
+function renderExpenses(){
+  var html = '';
+
+  /* on-trip expense cards by category */
+  var catColors = ['#F2A93E', '#5AAEEF', '#BD8BEA', '#41C5A2'];
+  var catIcons = ['\uD83C\uDF74', '\uD83D\uDE97', '\uD83C\uDFAD', '\uD83D\uDCB0'];
+  SPEND_TRIP.forEach(function(cat, i){
+    html += '<div class="expcat">' +
+      '<div class="expcat-bar" style="background:' + catColors[i] + '"></div>' +
+      '<div class="expcat-body">' +
+        '<div class="expcat-head">' +
+          '<span class="expcat-icon">' + catIcons[i] + '</span>' +
+          '<span class="expcat-name">' + L(cat.name) + '</span>' +
+          '<span class="expcat-amt mono">' + fmtMYR(cat.amt) + '</span>' +
+        '</div>' +
+        '<div class="expcat-sub">' + L(cat.calc) + '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  /* totals row */
+  html += '<div class="exptotal">' +
+    '<div class="exptotal-row"><span>' + t('expense.total') + '</span><span class="mono">' + fmtMYR(SPEND_TRIP.reduce(function(s,c){return s+c.amt;},0)) + '</span></div>' +
+    '<div class="exptotal-row"><span>' + t('expense.prepaid') + '</span><span class="mono">' + fmtMYRexact(SPEND_PREPAID.reduce(function(s,c){return s+c.amt;},0)) + '</span></div>' +
+    '<div class="exptotal-row grand"><span>' + t('expense.grand') + '</span><span class="mono">' + fmtMYR(SPEND_TOTAL) + '</span></div>' +
+  '</div>';
+
+  /* grab trip cards */
+  html += '<div class="expsubhead">' + t('grab.title') + '</div>';
+  GRAB_TRIPS.forEach(function(g){
+    html += '<div class="grabrow">' +
+      '<span class="grabdate">' + L(g.date) + '</span>' +
+      '<span class="grabroute">' + L(g.route) + '</span>' +
+      '<span class="grabcost mono">' + g.cost + '</span>' +
+    '</div>';
+  });
+
+  var el = document.getElementById('expenseDetail');
+  if(el) el.innerHTML = html;
+}
+
+/* ---------- payment breakdown ---------- */
+function renderPayments(){
+  var html = '';
+  PAYMENT_INFO.contributors.forEach(function(c){
+    html += '<div class="payrow">' +
+      '<span class="payname">' + L(c.name) + '</span>' +
+      '<span class="paycur mono">' + c.currency + ' ' + c.amount + '</span>' +
+      '<span class="payrate mono">&times; ' + c.rate + '</span>' +
+      '<span class="paymyr mono">' + fmtMYR(c.myr) + '</span>' +
+    '</div>';
+  });
+  html += '<div class="paytotal mono">= ' + fmtMYR(PAYMENT_INFO.fundTotal) + ' pooled</div>';
+
+  var diff = PAYMENT_INFO.fundTotal - PAYMENT_INFO.spendTotal;
+  html += '<div class="paydiff mono">' + t('dyn.spare', {n: diff.toLocaleString()}) + '</div>';
+
+  var el = document.getElementById('paymentDetail');
+  if(el) el.innerHTML = html;
+}
+
 /* ---------- trip details grid ---------- */
 function renderDetails(){
   function card(headingKey, body){ return '<div class="detailcard"><h4>' + t(headingKey) + '</h4>' + body + '</div>'; }
-  function dot(city){ return city ? '<span class="citydot ' + city + '">●</span>' : ''; }
+  function dot(city){ return city ? '<span class="citydot ' + city + '">\u25CF</span>' : ''; }
 
-  /* Flights — stacked */
+  /* Flights */
   var flights = '';
   FLIGHTS_REF.forEach(function(f){
     flights += '<div class="dc-row" style="display:block">' +
@@ -124,24 +230,26 @@ function renderDetails(){
     '</div><div class="dc-cost">' + L(tr.cost) + '</div></div>';
   });
 
-  /* Stays */
+  /* Stays - with map links */
   var stays = '';
   STAYS_REF.forEach(function(s){
-    stays += '<div class="staycard"><span class="staydot ' + s.city + '">●</span>' +
+    var mapLink = s.mapUrl ? ' <a class="booklink ' + s.city + '" href="' + s.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD Maps</a>' : '';
+    stays += '<div class="staycard"><span class="staydot ' + s.city + '">\u25CF</span>' +
       '<span class="sc-name">' + s.name + '</span>' +
       '<div class="sc-area">' + L(s.room) + '</div>' +
       '<div class="sc-line">' + L(s.dates) + '</div>' +
-      '<div class="sc-line"><span class="sc-cost">' + L(s.cost) + '</span></div>' +
+      '<div class="sc-line"><span class="sc-cost">' + L(s.cost) + '</span>' + mapLink + '</div>' +
     '</div>';
   });
 
-  /* Dining + Experiences share one renderer */
+  /* Dining + Experiences */
   function refList(arr){
     var html = '';
     arr.forEach(function(x){
       var chip = x.booked ? ' <span class="bookedchip">' + t('chip.booked') + '</span>' : '';
+      var mapLink = x.mapUrl ? ' <a class="booklink ' + x.city + '" href="' + x.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD</a>' : '';
       html += '<div class="dc-row"><div class="dc-main">' +
-        '<div class="dc-name">' + L(x.name) + dot(x.city) + chip + '</div>' +
+        '<div class="dc-name">' + L(x.name) + dot(x.city) + chip + mapLink + '</div>' +
         (x.sub ? '<div class="dc-sub">' + L(x.sub) + '</div>' : '') +
         (x.note ? '<div class="dc-note">' + L(x.note) + '</div>' : '') +
       '</div><div class="dc-cost">' + L(x.cost) + '</div></div>';
@@ -156,12 +264,12 @@ function renderDetails(){
       '<span class="dc-value">' + L(e.value) + '</span></div>';
   });
 
-  /* Packing (open boxes) + Checklist (done items ticked) */
+  /* Packing + Checklist */
   function checks(arr){
     return arr.map(function(it){
       var done = it.done === true;
       return '<div class="dc-check' + (done ? ' done' : '') + '">' +
-        '<span class="gly">' + (done ? '☑' : '▢') + '</span><span>' + L(it) + '</span></div>';
+        '<span class="gly">' + (done ? '\u2611' : '\u25A2') + '</span><span>' + L(it) + '</span></div>';
     }).join('');
   }
 
@@ -180,5 +288,7 @@ function renderDetails(){
 function renderAll(){
   renderBudget();
   renderItin();
+  renderExpenses();
+  renderPayments();
   renderDetails();
 }

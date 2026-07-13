@@ -489,3 +489,78 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   .staycard .booklink{display:none!important}
   .dday-cost{border-top-color:#ccc!important}
 }
+
+/* ---------- enhanced itinerary: type icons, costs, map links ---------- */
+.idcheck{font-size:11px;margin-left:6px;filter:grayscale(0)}
+.seg-done .segtxt{color:var(--ink)}
+.idcost{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;font-size:var(--fs-label);color:var(--green);
+  background:rgba(63,191,143,.12);border:1px solid rgba(63,191,143,.25);border-radius:5px;
+  padding:1px 6px;margin-left:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.iconfirm{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;font-size:var(--fs-label);color:var(--mut);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-left:6px;white-space:nowrap}
+.imap{display:inline-flex;align-items:center;gap:2px;margin-left:6px;font-size:11px;text-decoration:none;
+  color:var(--dim);transition:color .15s;white-space:nowrap}
+.imap:hover{color:var(--pg)}
+.dday-map{display:inline-block;font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;
+  font-size:var(--fs-label);text-decoration:none;color:var(--dim);margin-left:auto;
+  transition:color .15s;white-space:nowrap}
+.dday-map:hover{color:var(--pg)}
+.dday-flight-head{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;
+  font-size:var(--fs-label);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mut);margin-bottom:6px}
+.dday .verifylink{display:inline-block;margin-top:6px;font-size:var(--fs-fine);
+  text-decoration:none;color:var(--pg);transition:opacity .15s}
+.dday .verifylink:hover{opacity:.8}
+
+/* ---------- expense summary section ---------- */
+.expenses-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:760px){.expenses-grid{grid-template-columns:1fr}}
+.expcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.expcard h4{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;font-size:var(--fs-name);
+  font-weight:700;color:var(--mut);letter-spacing:.1em;text-transform:uppercase;
+  margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.expcat{display:flex;gap:0;margin-bottom:10px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--line)}
+.expcat-bar{width:4px;flex:none}
+.expcat-body{padding:10px 12px;flex:1}
+.expcat-head{display:flex;align-items:center;gap:8px}
+.expcat-icon{font-size:16px;flex:none}
+.expcat-name{font-size:var(--fs-name);font-weight:600;color:var(--ink)}
+.expcat-amt{font-size:var(--fs-mono);color:var(--ink);margin-left:auto;font-weight:500}
+.expcat-sub{font-size:var(--fs-fine);color:var(--dim);margin-top:3px;padding-left:24px}
+.exptotal{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.exptotal-row{display:flex;justify-content:space-between;align-items:center;
+  padding:4px 0;font-size:var(--fs-body);color:var(--mut)}
+.exptotal-row.grand{font-weight:600;color:var(--ink);font-size:var(--fs-name);
+  padding-top:8px;margin-top:6px;border-top:1px solid var(--line)}
+.expsubhead{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;
+  font-size:var(--fs-label);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut);margin:14px 0 8px}
+.grabrow{display:flex;align-items:center;gap:10px;padding:6px 0;
+  border-bottom:1px solid var(--line);font-size:var(--fs-body)}
+.grabrow:last-child{border-bottom:none}
+.grabdate{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;
+  font-size:var(--fs-label);color:var(--dim);min-width:100px;flex:none}
+.grabroute{color:var(--mut);flex:1;min-width:0;font-size:var(--fs-fine)}
+.grabcost{font-size:var(--fs-mono);color:var(--ink);font-weight:500;flex:none}
+
+/* ---------- payment breakdown ---------- */
+.payrow{display:flex;align-items:center;gap:10px;padding:5px 0;
+  font-size:var(--fs-body);border-bottom:1px solid var(--line)}
+.payrow:last-child{border-bottom:none}
+.payname{font-weight:600;color:var(--ink);min-width:70px}
+.paycur{color:var(--mut);font-size:var(--fs-mono)}
+.payrate{color:var(--dim);font-size:var(--fs-fine);margin-left:auto}
+.paymyr{color:var(--ink);font-weight:500;min-width:70px;text-align:right;font-size:var(--fs-mono)}
+.paytotal{font-size:var(--fs-name);font-weight:600;color:var(--ink);padding:8px 0;text-align:right}
+
+/* ---------- venue thumbnail images ---------- */
+.vnthumb{display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:28px;flex-shrink:0;border-radius:4px;
+  text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;
+  margin-right:8px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.vnthumb:hover{transform:scale(1.12);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.vnthumb span{font-size:14px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
+.seg{display:flex;align-items:flex-start;gap:0}
+.seg-inner{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px}
+.paydiff{font-size:var(--fs-mono);color:var(--green);text-align:right;padding-bottom:4px}

@@ -24,11 +24,11 @@
 
   <header class="top">
     <div>
-      <div class="eyebrow" data-i18n="header.eyebrow">Booked itinerary · KL × Kota Kinabalu · Jul 16–25, 2026</div>
+      <div class="eyebrow" data-i18n="header.eyebrow">Booked itinerary · KL × Kota Kinabalu · Jul 16–22, 2026</div>
       <h1><span class="a-kl" data-i18n="city.kl">Kuala Lumpur</span><span class="x">×</span><span class="a-pg" data-i18n="city.pg">Kota Kinabalu</span></h1>
     </div>
     <div class="meta">
-      <div><span class="lab" data-i18n="meta.window">Window</span><br><span class="val" data-i18n="meta.windowVal">Jul 16 → 25</span></div>
+      <div><span class="lab" data-i18n="meta.window">Window</span><br><span class="val" data-i18n="meta.windowVal">Jul 16 → 22</span></div>
     </div>
     <div class="meta" style="margin-left:0">
       <div><span class="lab" data-i18n="meta.budget">Trip fund · 2 pax</span><br><span class="val mono" id="budgetHdr">RM 15,400</span></div>
@@ -80,15 +80,33 @@
   <section id="itin">
     <div class="shead">
       <span class="n">02</span><h2 data-i18n="sec.itin">Itinerary</h2>
-      <span class="sub" data-i18n-html="itin.sub">10 days · Jul 16–25 · booked.</span>
+      <span class="sub" data-i18n-html="itin.sub">7 days · Jul 16–22 · fully booked. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span></span>
     </div>
     <div class="daysDetail" id="daysDetail"></div>
+  </section>
+
+  <!-- ===================== EXPENSE & PAYMENT SUMMARY ===================== -->
+  <section id="expenses">
+    <div class="shead">
+      <span class="n">03</span><h2 data-i18n="sec.expenses">Expense summary</h2>
+      <span class="sub" data-i18n-html="expenses.sub">On-trip spending breakdown by category · total RM 4,009 · plus prepaid RM 10,920 = RM 14,929</span>
+    </div>
+    <div class="expenses-grid">
+      <div class="expcard">
+        <h4 data-i18n="expense.total">On-trip spending</h4>
+        <div id="expenseDetail"></div>
+      </div>
+      <div class="expcard">
+        <h4 data-i18n="payment.title">Payment breakdown</h4>
+        <div id="paymentDetail"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== TRIP DETAILS ===================== -->
   <section id="details">
     <div class="shead">
-      <span class="n">03</span><h2 data-i18n="sec.details">Trip details &amp; essentials</h2>
+      <span class="n">04</span><h2 data-i18n="sec.details">Trip details &amp; essentials</h2>
       <span class="sub" data-i18n="details.sub">Flights, transfers, stays, dining, experiences &amp; know-before-you-go — with confirmation numbers.</span>
     </div>
     <div class="detailgrid" id="detailgrid"></div>

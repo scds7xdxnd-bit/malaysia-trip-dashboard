@@ -15,11 +15,11 @@ const I18N = (function(){
   const DICT = {
     en: {
       'app.title':        'KL × Kota Kinabalu — Booked Trip Console',
-      'header.eyebrow':   'Booked itinerary · KL × Kota Kinabalu · Jul 16–25, 2026',
+      'header.eyebrow':   'Booked itinerary · KL × Kota Kinabalu · Jul 16–22, 2026',
       'city.kl':          'Kuala Lumpur',
       'city.pg':          'Kota Kinabalu',
       'meta.window':      'Window',
-      'meta.windowVal':   'Jul 16 → 25',
+      'meta.windowVal':   'Jul 16 → 22',
       'meta.budget':      'Trip fund · 2 pax',
 
       'sec.console':      'Budget & payments',
@@ -37,7 +37,16 @@ const I18N = (function(){
       'verdict.over':     'Planned spend exceeds the pooled fund — trim the on-trip categories.',
 
       'sec.itin':         'Itinerary',
-      'itin.sub':         '7 days together · Jul 16–22 · booked. Jul 23–25 (Le Méridien PJ) runs on separate plans. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span>',
+      'itin.sub':         '7 days · Jul 16–22 · fully booked. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span>',
+
+      'sec.expenses':     'Expense summary',
+      'expenses.sub':     'On-trip spending breakdown by category · total RM 4,009 · plus prepaid RM 10,920 = RM 14,929',
+      'expense.total':    'Total on-trip',
+      'expense.prepaid':  'Prepaid bookings',
+      'expense.grand':    'Grand total',
+
+      'sec.venues':       'Venues & map links',
+      'venues.sub':       'All key locations with Google Maps links — tap to open directions.',
 
       'sec.details':      'Trip details & essentials',
       'details.sub':      'Flights, transfers, stays, dining, experiences & know-before-you-go — everything confirmed.',
@@ -49,11 +58,15 @@ const I18N = (function(){
       'detail.essentials':  'Know before you go',
       'detail.packing':     'Packing list',
       'detail.checklist':   'Checklist',
+
       'day.flight':         'Flight',
       'day.tips':           'Tips',
       'day.cost':           'Est. day cost',
       'day.toggleShow':     'Show details',
       'day.toggleHide':     'Hide details',
+      'day.verify':         'Verify flight',
+      'day.confirm':        'Confirm #',
+      'day.mapLink':        'Open in Maps',
       'dyn.day':            'Day {n}',
       'dyn.cityKL':         'KL',
       'dyn.cityPG':         'Kota Kinabalu',
@@ -65,6 +78,17 @@ const I18N = (function(){
       'flight.time':        'Time',
       'flight.ref':         'Ref',
 
+      'type.flight':        'Flight',
+      'type.transport':     'Transport',
+      'type.meal':          'Meal',
+      'type.sightseeing':   'Sightseeing',
+      'type.stay':          'Stay',
+      'type.leisure':       'Leisure',
+      'type.shopping':      'Shopping',
+
+      'grab.title':         'Grab ride receipts',
+      'payment.title':      'Payment breakdown',
+
       'share.btn':       'Share plan',
       'share.copied':    'Copied!',
       'print.btn':       'Print plan',
@@ -72,11 +96,11 @@ const I18N = (function(){
 
     zh: {
       'app.title':        '吉隆坡 × 亚庇 · 已订行程控制台',
-      'header.eyebrow':   '已订行程 · 吉隆坡 × 亚庇 · 2026年7月16–25',
+      'header.eyebrow':   '已订行程 · 吉隆坡 × 亚庇 · 2026年7月16–22',
       'city.kl':          '吉隆坡',
       'city.pg':          '亚庇',
       'meta.window':      '时间窗口',
-      'meta.windowVal':   '7月16 → 25',
+      'meta.windowVal':   '7月16 → 22',
       'meta.budget':      '旅行资金 · 2 人',
 
       'sec.console':      '预算与付款',
@@ -94,7 +118,16 @@ const I18N = (function(){
       'verdict.over':     '计划支出超出共同资金 —— 请压缩行程内开销。',
 
       'sec.itin':         '行程',
-      'itin.sub':         '同游 7 天 · 7月16–22 · 已预订。7月23–25（艾美）另行安排。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span>',
+      'itin.sub':         '7 天 · 7月16–22 · 已预订。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span>',
+
+      'sec.expenses':     '开支汇总',
+      'expenses.sub':     '行程内按类别开支 · 共 RM 4,009 · 加预付 RM 10,920 = RM 14,929',
+      'expense.total':    '行程内合计',
+      'expense.prepaid':  '预付订单',
+      'expense.grand':    '总计',
+
+      'sec.venues':       '地点与地图',
+      'venues.sub':       '所有关键地点附 Google Maps 链接 —— 点击查看导航。',
 
       'sec.details':      '行程详情与须知',
       'details.sub':      '航班、接送、住宿、餐饮、体验与出行须知 —— 全部已确认。',
@@ -106,11 +139,15 @@ const I18N = (function(){
       'detail.essentials':  '出行须知',
       'detail.packing':     '行李清单',
       'detail.checklist':   '清单',
+
       'day.flight':         '航班',
       'day.tips':           '提示',
       'day.cost':           '预估当日花费',
       'day.toggleShow':     '展开详情',
       'day.toggleHide':     '收起详情',
+      'day.verify':         '验证航班',
+      'day.confirm':        '确认号',
+      'day.mapLink':        '地图导航',
       'dyn.day':            '第 {n} 天',
       'dyn.cityKL':         '吉隆坡',
       'dyn.cityPG':         '亚庇',
@@ -121,6 +158,17 @@ const I18N = (function(){
       'flight.airline':     '航班',
       'flight.time':        '时间',
       'flight.ref':         '备注',
+
+      'type.flight':        '航班',
+      'type.transport':     '交通',
+      'type.meal':          '用餐',
+      'type.sightseeing':   '观光',
+      'type.stay':          '住宿',
+      'type.leisure':       '休闲',
+      'type.shopping':      '购物',
+
+      'grab.title':         'Grab 收据',
+      'payment.title':      '付款明细',
 
       'share.btn':       '分享方案',
       'share.copied':    '已复制！',
@@ -138,7 +186,6 @@ const I18N = (function(){
          : key;
   }
 
-  /* translate a UI key, interpolating {token} params */
   function t(key, params){
     let s = read(key);
     if(params){
@@ -149,7 +196,6 @@ const I18N = (function(){
     return s;
   }
 
-  /* pick the active-language string from a { en, zh } data field */
   function L(field){
     if(field == null) return '';
     if(typeof field === 'string') return field;
@@ -159,12 +205,11 @@ const I18N = (function(){
   function persist(){ try{ localStorage.setItem(STORE_KEY, lang); }catch(e){} }
   function htmlLang(){ document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en'; }
 
-  /* fill the static DOM, the title, the toggle button, then re-render */
   function apply(){
-    document.querySelectorAll('[data-i18n]').forEach(el => {
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
       el.textContent = t(el.getAttribute('data-i18n'));
     });
-    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
       el.innerHTML = t(el.getAttribute('data-i18n-html'));
     });
     document.title = t('app.title');
@@ -184,7 +229,6 @@ const I18N = (function(){
   }
   function toggle(){ set(lang === 'en' ? 'zh' : 'en'); }
 
-  /* read the persisted choice once, before first render */
   function initLang(){
     let saved = null;
     try{ saved = localStorage.getItem(STORE_KEY); }catch(e){}
@@ -197,6 +241,5 @@ const I18N = (function(){
   return { t, L, set, toggle, apply, initLang, get };
 })();
 
-/* convenience globals used across render.js */
-const t = (k, p) => I18N.t(k, p);
-const L = (f) => I18N.L(f);
+const t = function(k, p){ return I18N.t(k, p); };
+const L = function(f){ return I18N.L(f); };
