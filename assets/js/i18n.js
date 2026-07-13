@@ -40,7 +40,7 @@ const I18N = (function(){
       'itin.sub':         '10 days · Jul 16–25 · booked. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span> · <span style="color:var(--red)">red = departure</span>',
 
       'sec.details':      'Trip details & essentials',
-      'details.sub':      'Flights, transfers, stays, dining, experiences & know-before-you-go — with confirmation numbers.',
+      'details.sub':      'Flights, transfers, stays, dining, experiences & know-before-you-go — everything confirmed.',
       'detail.flights':     'Flights',
       'detail.transport':   'Transfers & ground',
       'detail.stays':       'Stays',
@@ -106,7 +106,7 @@ const I18N = (function(){
       'itin.sub':         '共 10 天 · 7月16–25 · 已预订。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span> · <span style="color:var(--red)">红色 = 回程</span>',
 
       'sec.details':      '行程详情与须知',
-      'details.sub':      '航班、接送、住宿、餐饮、体验与出行须知 —— 附确认号。',
+      'details.sub':      '航班、接送、住宿、餐饮、体验与出行须知 —— 全部已确认。',
       'detail.flights':     '航班',
       'detail.transport':   '接送与交通',
       'detail.stays':       '住宿',
@@ -138,7 +138,7 @@ const I18N = (function(){
       'flight.route':       '航线',
       'flight.airline':     '航班',
       'flight.time':        '时间',
-      'flight.ref':         '票号',
+      'flight.ref':         '备注',
 
       'share.btn':       '分享方案',
       'share.copied':    '已复制！',
