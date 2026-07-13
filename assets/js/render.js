@@ -6,6 +6,10 @@
    ============================================================ */
 
 function fmtMYR(n){ return 'RM ' + Math.round(n).toLocaleString(); }
+/* exact amount — keeps cents on actual payments (RM 4,631.36) */
+function fmtMYRexact(n){
+  return 'RM ' + n.toLocaleString('en-US', {minimumFractionDigits: (n % 1 ? 2 : 0), maximumFractionDigits: 2});
+}
 
 /* ---------- budget & payments (static — actuals) ---------- */
 function renderBudget(){
@@ -44,17 +48,17 @@ function renderBudget(){
   else           { rEl.className = 'remain bad'; rEl.textContent = t('dyn.over',  {n: Math.abs(remain).toLocaleString()}); }
   document.getElementById('verdict').textContent = remain >= 0 ? t('verdict.ok') : t('verdict.over');
 
-  function rows(arr){
+  function rows(arr, fmt){
     return arr.map(function(r){
       return '<div class="brow"><span class="dot" style="background:' + r.c + '"></span>' +
         '<span class="name">' + L(r.name) + '</span>' +
         '<span class="calc">' + L(r.calc) + '</span>' +
-        '<span class="amt">' + fmtMYR(r.amt) + '</span></div>';
+        '<span class="amt">' + fmt(r.amt) + '</span></div>';
     }).join('');
   }
   document.getElementById('breakdown').innerHTML =
-    '<div class="bd-group">' + t('pay.prepaid') + '</div>' + rows(SPEND_PREPAID) +
-    '<div class="bd-group">' + t('pay.ontrip') + '</div>' + rows(SPEND_TRIP);
+    '<div class="bd-group">' + t('pay.prepaid') + '</div>' + rows(SPEND_PREPAID, fmtMYRexact) +
+    '<div class="bd-group">' + t('pay.ontrip') + '</div>' + rows(SPEND_TRIP, fmtMYR);
 }
 
 /* ---------- itinerary — 10 fixed booked days ---------- */
@@ -74,11 +78,9 @@ function renderItin(){
       '</div>';
     }
 
-    var mealsHtml = '<div class="seg"><span class="seglab">' + t('day.meals') + '</span><span class="segtxt">' +
-      '<span class="mealtag">' + t('day.breakfast') + '</span> ' + L(plan.meals.breakfast) + '<br>' +
-      '<span class="mealtag">' + t('day.lunch') + '</span> ' + L(plan.meals.lunch) + '<br>' +
-      '<span class="mealtag">' + t('day.dinner') + '</span> ' + L(plan.meals.dinner) +
-    '</span></div>';
+    var schedHtml = plan.sched.map(function(row){
+      return '<div class="seg"><span class="seglab mono">' + row.t + '</span><span class="segtxt">' + L(row.txt) + '</span></div>';
+    }).join('');
 
     html += '<div class="dday ' + city + '">' +
       '<button class="dday-head" type="button" aria-expanded="false">' +
@@ -87,12 +89,8 @@ function renderItin(){
         '<span class="dday-toggle">' + t('day.toggleShow') + '</span>' +
       '</button>' +
       '<div class="dday-body" hidden>' +
-        '<div class="seg"><span class="seglab">' + t('day.morning') + '</span><span class="segtxt">' + L(plan.morning) + '</span></div>' +
-        '<div class="seg"><span class="seglab">' + t('day.afternoon') + '</span><span class="segtxt">' + L(plan.afternoon) + '</span></div>' +
-        '<div class="seg"><span class="seglab">' + t('day.evening') + '</span><span class="segtxt">' + L(plan.evening) + '</span></div>' +
-        mealsHtml +
+        schedHtml +
         flightBlock +
-        '<div class="seg"><span class="seglab">' + t('day.transport') + '</span><span class="segtxt">' + L(plan.transport) + '</span></div>' +
         '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
         '<div class="dday-cost"><span>' + t('day.cost') + '</span> ' + L(plan.cost) + '</div>' +
       '</div>' +
