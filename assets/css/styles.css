@@ -312,6 +312,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   .bar-row .rk{display:none!important}
   .booklink{display:none!important}
   .verifylink{display:none!important}
+  .imap{display:none!important}
   .gredline{display:none!important}
 
   .console,.ahp,.notes{box-shadow:none;page-break-inside:avoid;background:white!important}
@@ -492,6 +493,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 
 /* ---------- enhanced itinerary: type icons, costs, map links ---------- */
 .idcheck{font-size:11px;margin-left:6px;filter:grayscale(0)}
+.icost{font-size:var(--fs-label);color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:0 5px;margin-left:6px;white-space:nowrap}
 .seg-done .segtxt{color:var(--ink)}
 .idcost{font-family:"JetBrains Mono","PingFang SC","Microsoft YaHei",monospace;font-size:var(--fs-label);color:var(--green);
   background:rgba(63,191,143,.12);border:1px solid rgba(63,191,143,.25);border-radius:5px;

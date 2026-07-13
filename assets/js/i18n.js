@@ -87,7 +87,7 @@ const I18N = (function(){
       'type.leisure':       'Leisure',
       'type.shopping':      'Shopping',
 
-      'grab.title':         'Grab ride receipts',
+      'grab.title':         'Grab rides · pre-booked fares',
       'payment.title':      'Payment breakdown',
 
       'share.btn':       'Share plan',
@@ -169,7 +169,7 @@ const I18N = (function(){
       'type.leisure':       '休闲',
       'type.shopping':      '购物',
 
-      'grab.title':         'Grab 收据',
+      'grab.title':         'Grab 预约车 · 实际车资',
       'payment.title':      '付款明细',
 
       'share.btn':       '分享方案',

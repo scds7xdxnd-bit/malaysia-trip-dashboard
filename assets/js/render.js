@@ -97,10 +97,11 @@ function renderItin(){
       var mapLink = row.mapUrl ? ' <a class="imap" href="' + row.mapUrl + '" target="_blank" rel="noopener" title="' + t('day.mapLink') + '">\uD83D\uDCCD</a>' : '';
       var confirmBadge = row.confirm ? ' <span class="iconfirm">#' + (typeof row.confirm === 'string' ? row.confirm : L(row.confirm)) + '</span>' : '';
 
+      var costBadge = row.cost ? ' <span class="icost mono">' + row.cost + '</span>' : '';
       var doneClass = row.done ? ' seg-done' : '';
       return '<div class="seg' + doneClass + '"><span class="seglab mono">' +
         icon + ' ' + row.t + '</span><span class="segtxt">' + L(row.txt) +
-        doneMark + confirmBadge + mapLink + '</span></div>';
+        doneMark + confirmBadge + costBadge + mapLink + '</span></div>';
     }).join('');
 
     html += '<div class="dday ' + city + '">' +
@@ -113,6 +114,7 @@ function renderItin(){
         schedHtml +
         flightBlock +
         '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
+        '<div class="dday-cost"><span>' + t('day.cost') + '</span> ' + L(plan.cost) + '</div>' +
       '</div>' +
     '</div>';
   });
@@ -172,7 +174,8 @@ function renderPayments(){
       '<span class="paymyr mono">' + fmtMYR(c.myr) + '</span>' +
     '</div>';
   });
-  html += '<div class="paytotal mono">= ' + fmtMYR(PAYMENT_INFO.fundTotal) + ' pooled</div>';
+  html += '<div class="paytotal mono">' + t('fund.total', {n: PAYMENT_INFO.fundTotal.toLocaleString()}) + '</div>';
+  html += '<div class="paytotal mono">' + t('pay.status', {paid: PAID_SO_FAR.toLocaleString(), left: PAID_REMAINING.toLocaleString()}) + '</div>';
 
   var diff = PAYMENT_INFO.fundTotal - PAYMENT_INFO.spendTotal;
   html += '<div class="paydiff mono">' + t('dyn.spare', {n: diff.toLocaleString()}) + '</div>';

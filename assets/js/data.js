@@ -48,6 +48,9 @@ const SPEND_TRIP = [
   { c:'#41C5A2', name:{en:'Other / buffer', zh:'其他 / 备用'},  calc:{en:'eSIM, SIM, tips, extras', zh:'eSIM、电话卡、小费、杂项'}, amt:300 },
 ];
 const SPEND_TOTAL = 14929;   /* prepaid + on-trip, rounded per plan */
+const PREPAID_TOTAL = 10919.63; /* sum of the four prepaid bookings */
+const ONTRIP_TOTAL = 4009;      /* predicted on-trip spend, Jul 16-22 */
+const DAY_COSTS = [460, 553, 705, 516, 420, 580, 775]; /* per ITIN day, 2 pax */
 const PAID_SO_FAR = 11900;   /* settled so far */
 const PAID_REMAINING = 3029; /* still to pay / spend on the trip */
 
@@ -60,14 +63,6 @@ const PAYMENT_INFO = {
     { name:{en:'Junxi', zh:'君熙'}, currency:'CNY', amount:'8,600', rate:0.5437, myr:4676 },
     { name:{en:'Taeyang', zh:'凯鲁'}, currency:'KRW', amount:'3,880,000', rate:0.00276, myr:10724 },
   ],
-};
-
-/* booking confirmation numbers */
-const BOOKING_REFS = {
-  parkHyatt: '39177481',
-  theShoreKK: '4513',
-  parkLounge: 'CT4J9Q',
-  arte66: {en:'Jul 18 · 8:00 PM · 2 Adults', zh:'7月18 · 20:00 · 2 位成人'},
 };
 
 /* grab ride costs (actuals from receipts) */
@@ -88,7 +83,6 @@ const ITIN = [
         txt:{en:'Head to the airport (KL Ekspres).', zh:'前往机场（KL Ekspres）。'} },
       { t:'18:00–21:00', type:TYPE.TRANSPORT, done:true,
         mapUrl:'https://maps.google.com/?q=Park+Hyatt+Kuala+Lumpur',
-        confirm:'#39177481',
         txt:{en:'Land at KLIA Terminal 1 (MH377). 19:20 booked premium transfer to Park Hyatt Kuala Lumpur (Merdeka 118) — check in for 3 nights, breakfast included.', zh:'抵达吉隆坡国际机场 1 号航站楼（MH377）。19:20 已订高级专车前往吉隆坡柏悦酒店（Merdeka 118）—— 入住 3 晚，含早餐。'} },
       { t:'21:00–22:00', type:TYPE.MEAL, mapUrl:'https://maps.google.com/?q=Seoul+Garden+LaLaport+BBCC+Kuala+Lumpur',
         cost:'RM 220',
@@ -114,7 +108,7 @@ const ITIN = [
         txt:{en:'Kwai Chai Hong &amp; Chan She Shu Yuen Clan Association &mdash; restored alleyway murals and heritage clan house.', zh:'鬼仔巷与陈氏书院 —— 修复小巷壁画与百年宗祠。'} },
       { t:'15:30–17:30', type:TYPE.LEISURE,
         txt:{en:'Back to the hotel to rest and freshen up.', zh:'回酒店休息、收拾。'} },
-      { t:'18:00–20:00', type:TYPE.MEAL, done:true, cost:'RM 343', confirm:'CT4J9Q',
+      { t:'18:00–20:00', type:TYPE.MEAL, done:true, cost:'RM 343',
         mapUrl:'https://maps.google.com/?q=Park+Lounge+Park+Hyatt+Kuala+Lumpur',
         txt:{en:'Dinner at Park Lounge, Park Hyatt (booked, 2 pax): Umai Ikan Merah, Daging Dendeng Cili Berapi, Nasi Goreng Ketam Bunga, Butter Chicken, Bendi Cabai Tumbuk.', zh:'于柏悦 Park Lounge 晚餐（已预订，2 人）：Umai Ikan Merah、Daging Dendeng Cili Berapi、花蟹炒饭、黄油鸡、Bendi Cabai Tumbuk。'} },
       { t:'20:00–22:00', type:TYPE.SIGHTSEEING, mapUrl:'https://maps.google.com/?q=Sultan+Abdul+Samad+Building+Kuala+Lumpur',
@@ -149,7 +143,6 @@ const ITIN = [
         txt:{en:'Back to the hotel — pack for tomorrow\'s checkout.', zh:'回酒店 —— 为明日退房收拾行李。'} },
       { t:'20:00–22:00', type:TYPE.MEAL, done:true, cost:'RM 500',
         mapUrl:'https://maps.google.com/?q=Arte+66+Restaurant+Bar+Kuala+Lumpur',
-        confirm:{en:'Jul 18 · 8:00 PM · 2 Adults', zh:'7月18 · 20:00 · 2 位成人'},
         txt:{en:'Dinner at Arté 66 Restaurant & Bar — dinner / couple set, confirmed for 2 adults.', zh:'于 Arté 66 Restaurant & Bar 晚餐 —— 晚餐/双人套餐，已确认 2 位成人。'} },
     ],
     tips:{en:'Bring the student ID for museum discounts.', zh:'携带学生证享博物馆折扣。'},
@@ -165,7 +158,7 @@ const ITIN = [
       { t:'10:35–12:00', type:TYPE.TRANSPORT, done:true,
         txt:{en:'Booked transfer Park Hyatt → KLIA Terminal 1 (KRW 34,974, paid).', zh:'已订专车 柏悦 → 吉隆坡国际机场 1 号航站楼（KRW 34,974，已付）。'} },
       { t:'13:30–16:00', type:TYPE.FLIGHT, done:true,
-        verifyUrl:'https://www.batikair.com.my/flight-verify/816-2137703828',
+        verifyUrl:'https://www.google.com/travel/flights?q=KUL+to+BKI+on+2026-07-19',
         txt:{en:'Batik Air OD1004, business class, KUL T1 → BKI T1.', zh:'峇迪航空 OD1004 商务舱，KUL T1 → BKI T1。'} },
       { t:'16:00–18:00', type:TYPE.TRANSPORT,
         mapUrl:'https://maps.google.com/?q=Shangri-La+Rasa+Ria+Resort+Kota+Kinabalu',
@@ -181,7 +174,7 @@ const ITIN = [
              airline:{en:'Batik Air OD1004 · business class', zh:'峇迪航空 OD1004 · 商务舱'},
              time:{en:'13:30 → 16:00 · ~2h 30m', zh:'13:30 → 16:00 · 约2小时30分'},
              ref:{en:'Booked · pkg RM 2,796 w/ Rasa Ria', zh:'已出票 · 与莎利雅套票 RM 2,796'},
-             verifyUrl:'https://www.batikair.com.my/flight-verify/816-2137703828',
+             verifyUrl:'https://www.google.com/travel/flights?q=KUL+to+BKI+on+2026-07-19',
              q:'KUL+to+BKI+on+2026-07-19' } },
 
   /* ── Day 5 ── */
@@ -193,7 +186,6 @@ const ITIN = [
         txt:{en:'Resort breakfast (included); check out before 12:00.', zh:'度假村早餐（已含）；12:00 前退房。'} },
       { t:'12:00–13:30', type:TYPE.TRANSPORT, cost:'RM 77.25',
         mapUrl:'https://maps.google.com/?q=The+Shore+Kota+Kinabalu',
-        confirm:'#4513',
         txt:{en:'Rasa Ria → The Shore Kota Kinabalu by Meetstay (walk or Grab): Family Suite “Lux Balcony & Seaview” B1613, 2 nights, check-in from 15:00.', zh:'莎利雅 → The Shore Kota Kinabalu by Meetstay(步行或 Grab)：家庭套房「Lux Balcony & Seaview」B1613，2 晚，15:00 起入住。'} },
       { t:'13:30–14:30', type:TYPE.MEAL, cost:'RM 120',
         mapUrl:'https://maps.google.com/?q=Todak+Waterfront+Kota+Kinabalu',
@@ -243,7 +235,7 @@ const ITIN = [
       { t:'13:00–13:30', type:TYPE.TRANSPORT, cost:'RM 20.60',
         txt:{en:'Grab to BKI Terminal 1; LoungeKey lounge before the flight (QR codes, both travellers).', zh:'Grab 前往亚庇机场 1 号航站楼；登机前使用 LoungeKey 贵宾室（QR 码，两人均有）。'} },
       { t:'15:10–17:45', type:TYPE.FLIGHT, done:true,
-        verifyUrl:'https://www.batikair.com.my/flight-verify/816-2137703674',
+        verifyUrl:'https://www.google.com/travel/flights?q=BKI+to+KUL+on+2026-07-22',
         txt:{en:'Batik Air OD1017, business class, BKI T1 → Subang (SZB) — note: not KLIA.', zh:'峇迪航空 OD1017 商务舱，BKI T1 → 梳邦机场（SZB）—— 注意：并非 KLIA。'} },
       { t:'18:25–19:30', type:TYPE.TRANSPORT, done:true,
         mapUrl:'https://maps.google.com/?q=Le+Meridien+Petaling+Jaya',
@@ -261,7 +253,7 @@ const ITIN = [
              airline:{en:'Batik Air OD1017 · business class', zh:'峇迪航空 OD1017 · 商务舱'},
              time:{en:'15:10 → 17:45 · ~2h 35m', zh:'15:10 → 17:45 · 约2小时35分'},
              ref:{en:'Booked · pkg RM 3,154 w/ Le Méridien', zh:'已出票 · 与艾美套票 RM 3,154'},
-             verifyUrl:'https://www.batikair.com.my/flight-verify/816-2137703674',
+             verifyUrl:'https://www.google.com/travel/flights?q=BKI+to+KUL+on+2026-07-22',
               q:'BKI+to+KUL+on+2026-07-22' } },
 
 
@@ -326,42 +318,42 @@ const STAYS_REF = [
 
 /* ---------- dining ---------- */
 const DINING_REF = [
-  { name:'Park Lounge · Park Hyatt', city:'kl', booked:true,
+  { name:'Park Lounge · Park Hyatt', city:'kl', booked:true, map:'Park Hyatt Kuala Lumpur',
     mapUrl:'https://maps.google.com/?q=Park+Lounge+Park+Hyatt+Kuala+Lumpur',
     sub:{en:'Malaysian set · in-hotel', zh:'马来风味 · 酒店内'},
     cost:{en:'~RM 343', zh:'约RM 343'},
     note:{en:'Booked ✓ Jul 17, 18:00', zh:'已订 ✓ 7月17 18:00'} },
-  { name:'Arté 66 Restaurant & Bar', city:'kl', booked:true,
+  { name:'Arté 66 Restaurant & Bar', city:'kl', booked:true, map:'Arte 66 Restaurant Kuala Lumpur',
     mapUrl:'https://maps.google.com/?q=Arte+66+Restaurant+Bar+Kuala+Lumpur',
     sub:{en:'Dinner / couple set', zh:'晚餐 / 双人套餐'},
     cost:{en:'~RM 500', zh:'约RM 500'},
     note:{en:'Booked ✓ Jul 18, 20:00 · 2 adults', zh:'已订 ✓ 7月18 20:00 · 2 位成人'} },
-  { name:'Tepi Laut · Rasa Ria', city:'pg', booked:true,
+  { name:'Tepi Laut · Rasa Ria', city:'pg', booked:true, map:'Shangri-La Rasa Ria Resort Tuaran',
     mapUrl:'https://maps.google.com/?q=Tepi+Laut+Rasa+Ria+Tuaran',
     sub:{en:'"Roast Night" poolside buffet', zh:'「Roast Night」池畔自助'},
     cost:{en:'~RM 316', zh:'约RM 316'},
     note:{en:'Booked ✓ Jul 19, 19:30', zh:'已订 ✓ 7月19 19:30'} },
-  { name:'Rooftop Bar & Grill · Hilton KK', city:'pg', booked:true,
+  { name:'Rooftop Bar & Grill · Hilton KK', city:'pg', booked:true, map:'Hilton Kota Kinabalu',
     mapUrl:'https://maps.google.com/?q=Rooftop+Bar+and+Grill+Hilton+Kota+Kinabalu',
     sub:{en:'À la carte dining', zh:'单点晚餐'},
     cost:{en:'~RM 150', zh:'约RM 150'},
     note:{en:'Booked ✓ Jul 21, 20:00', zh:'已订 ✓ 7月21 20:00'} },
-  { name:'Curate · Four Seasons KL', city:'kl', booked:true,
+  { name:'Curate · Four Seasons KL', city:'kl', booked:true, map:'Four Seasons Hotel Kuala Lumpur',
     mapUrl:'https://maps.google.com/?q=Curate+Four+Seasons+Kuala+Lumpur',
     sub:{en:'Hotel signature restaurant · 145 Jalan Ampang', zh:'酒店招牌餐厅 · 145 Jalan Ampang'},
     cost:{en:'~RM 500', zh:'约RM 500'},
     note:{en:'Booked ✓ Jul 22, 20:30 · via OpenTable', zh:'已订 ✓ 7月22 20:30 · 经 OpenTable'} },
-  { name:'Seoul Garden · LaLaport BBCC', city:'kl',
+  { name:'Seoul Garden · LaLaport BBCC', city:'kl', map:'Seoul Garden LaLaport Bukit Bintang City Centre',
     mapUrl:'https://maps.google.com/?q=Seoul+Garden+LaLaport+BBCC+Kuala+Lumpur',
     sub:{en:'Arrival-night dinner, walk from Park Hyatt', zh:'抵达夜晚餐，柏悦步行可达'},
     cost:{en:'~RM 220', zh:'约RM 220'},
     note:{en:'Jul 16 · walk-in', zh:'7月16 · 无需预订'} },
-  { name:'Todak Waterfront', city:'pg',
+  { name:'Todak Waterfront', city:'pg', map:'Todak Waterfront Kota Kinabalu',
     mapUrl:'https://maps.google.com/?q=Todak+Waterfront+Kota+Kinabalu',
     sub:{en:'Seafront lunch, KK waterfront', zh:'亚庇海滨午餐'},
     cost:{en:'~RM 120', zh:'约RM 120'},
     note:{en:'Jul 20 · walk-in', zh:'7月20 · 无需预订'} },
-  { name:{en:'Filipino Night Market', zh:'菲律宾夜市'}, city:'pg',
+  { name:{en:'Filipino Night Market', zh:'菲律宾夜市'}, city:'pg', map:'Filipino Market Kota Kinabalu',
     mapUrl:'https://maps.google.com/?q=Filipino+Market+Kota+Kinabalu',
     sub:{en:'Grilled seafood + handicraft market', zh:'炭烤海鲜 + 手工艺市场'},
     cost:{en:'~RM 150', zh:'约RM 150'},
@@ -370,27 +362,27 @@ const DINING_REF = [
 
 /* ---------- experiences ---------- */
 const EXPERIENCES_REF = [
-  { name:{en:'Sapi & Manukan island day trip', zh:'沙庇岛与马努干岛一日游'}, city:'pg', booked:true,
+  { name:{en:'Sapi & Manukan island day trip', zh:'沙庇岛与马努干岛一日游'}, city:'pg', booked:true, map:'Jesselton Point Ferry Terminal',
     sub:{en:'Snorkelling + parasailing · Jesselton Point 07:30', zh:'浮潜 + 帆伞 · 07:30 Jesselton Point'},
     cost:{en:'RM 356 · paid', zh:'RM 356 · 已付'},
     note:{en:'Booked ✓ Jul 21 · Daeng Travel · fees included', zh:'已订 ✓ 7月21 · Daeng Travel · 含门票船票'} },
-  { name:{en:'Chinatown heritage walk', zh:'茨厂街古迹漫步'}, city:'kl',
+  { name:{en:'Chinatown heritage walk', zh:'茨厂街古迹漫步'}, city:'kl', map:'Kwai Chai Hong Kuala Lumpur',
     sub:{en:'Pasar Seni, temples, Kwai Chai Hong', zh:'中央艺术坊、庙宇、鬼仔巷'},
     cost:{en:'~RM 50', zh:'约RM 50'},
     note:{en:'Jul 17', zh:'7月17'} },
-  { name:{en:'Museums & Masjid Negara', zh:'博物馆与国家清真寺'}, city:'kl',
+  { name:{en:'Museums & Masjid Negara', zh:'博物馆与国家清真寺'}, city:'kl', map:'Islamic Arts Museum Malaysia',
     sub:{en:'Islamic Arts Museum RM40 (student RM10)', zh:'伊斯兰艺术博物馆 RM40（学生 RM10）'},
     cost:{en:'~RM 50', zh:'约RM 50'},
     note:{en:'Jul 18 morning', zh:'7月18 上午'} },
-  { name:{en:'KL Tower & TRX Exchange', zh:'吉隆坡塔与 TRX'}, city:'kl',
+  { name:{en:'KL Tower & TRX Exchange', zh:'吉隆坡塔与 TRX'}, city:'kl', map:'Menara Kuala Lumpur',
     sub:{en:'Tower views, then luxury-mall stroll', zh:'塔上观景，随后逛奢侈品商场'},
     cost:{en:'~RM 65', zh:'约RM 65'},
     note:{en:'Jul 18 afternoon', zh:'7月18 下午'} },
-  { name:{en:'River of Life & Dataran Merdeka by night', zh:'夜游生命之河与独立广场'}, city:'kl',
+  { name:{en:'River of Life & Dataran Merdeka by night', zh:'夜游生命之河与独立广场'}, city:'kl', map:'Dataran Merdeka Kuala Lumpur',
     sub:{en:'I Love KL sign, Kolam Biru', zh:'I Love KL 打卡点、蓝池'},
     cost:{en:'Free', zh:'免费'},
     note:{en:'Jul 17 evening', zh:'7月17 晚间'} },
-  { name:{en:'KK waterfront & I Love KK', zh:'亚庇海滨与我爱亚庇'}, city:'pg',
+  { name:{en:'KK waterfront & I Love KK', zh:'亚庇海滨与我爱亚庇'}, city:'pg', map:'Kota Kinabalu Waterfront',
     sub:{en:'Seafront walk, markets', zh:'海滨漫步、市集'},
     cost:{en:'Free', zh:'免费'},
     note:{en:'Jul 20', zh:'7月20'} },
