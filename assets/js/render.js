@@ -94,18 +94,14 @@ function renderItin(){
     var schedHtml = plan.sched.map(function(row){
       var icon = TYPE_ICON[row.type] || '';
       var doneMark = row.done ? ' <span class="idcheck" title="confirmed">\u2705</span>' : '';
-      var costBadge = row.cost ? ' <span class="idcost">' + row.cost + '</span>' : '';
       var mapLink = row.mapUrl ? ' <a class="imap" href="' + row.mapUrl + '" target="_blank" rel="noopener" title="' + t('day.mapLink') + '">\uD83D\uDCCD</a>' : '';
       var confirmBadge = row.confirm ? ' <span class="iconfirm">#' + (typeof row.confirm === 'string' ? row.confirm : L(row.confirm)) + '</span>' : '';
 
       var doneClass = row.done ? ' seg-done' : '';
       return '<div class="seg' + doneClass + '"><span class="seglab mono">' +
         icon + ' ' + row.t + '</span><span class="segtxt">' + L(row.txt) +
-        doneMark + costBadge + confirmBadge + mapLink + '</span></div>';
+        doneMark + confirmBadge + mapLink + '</span></div>';
     }).join('');
-
-    /* day map link */
-    var dayMapLink = plan.mapUrl ? '<a class="dday-map" href="' + plan.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD ' + t('day.mapLink') + '</a>' : '';
 
     html += '<div class="dday ' + city + '">' +
       '<button class="dday-head" type="button" aria-expanded="false">' +
@@ -117,7 +113,6 @@ function renderItin(){
         schedHtml +
         flightBlock +
         '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
-        '<div class="dday-cost"><span>' + t('day.cost') + '</span><span>' + L(plan.cost) + '</span>' + dayMapLink + '</div>' +
       '</div>' +
     '</div>';
   });
