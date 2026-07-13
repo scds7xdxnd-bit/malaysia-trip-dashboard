@@ -12,10 +12,10 @@
 
 /* ---------- money: trip fund & spend (RM unless stated) ---------- */
 const FUND_ROWS = [
-  { who:{en:'Junxi', zh:'君熙'},   src:'¥8,600 CNY',        rate:'× 0.60',   myr:5160 },
-  { who:{en:'Taeyang', zh:'凯鲁'}, src:'₩3,880,000 KRW',    rate:'× 0.0027', myr:10476 },
+  { who:{en:'Junxi', zh:'君熙'},   src:'¥8,600 CNY',        rate:'× 0.5437',  myr:4676 },
+  { who:{en:'Taeyang', zh:'凯鲁'}, src:'₩3,880,000 KRW',    rate:'× 0.00276', myr:10724 },
 ];
-const FUND_TOTAL = 15636;
+const FUND_TOTAL = 15400;
 
 /* prepaid bookings (already paid by card) */
 const SPEND_PREPAID = [
@@ -31,14 +31,14 @@ const SPEND_PREPAID = [
 
 /* on-trip spending, per plan (2 pax, Jul 16–22) */
 const SPEND_TRIP = [
-  { c:'var(--mut)', name:{en:'Food & dining', zh:'饮食'},           calc:{en:'incl. 5 reserved dinners', zh:'含 5 顿已订晚餐'}, amt:2199 },
+  { c:'var(--mut)', name:{en:'Food & dining', zh:'饮食'},           calc:{en:'incl. 5 reserved dinners', zh:'含 5 顿已订晚餐'}, amt:2499 },
   { c:'var(--mut)', name:{en:'Local transport', zh:'当地交通'},     calc:{en:'Grab + booked transfers', zh:'Grab + 已订接送'}, amt:770 },
   { c:'var(--mut)', name:{en:'Entertainment', zh:'娱乐'},           calc:{en:'island trip, tickets', zh:'跳岛、门票'}, amt:440 },
   { c:'var(--mut)', name:{en:'Other', zh:'其他'},                   calc:{en:'buffer for extras', zh:'杂项备用'}, amt:300 },
 ];
-const SPEND_TOTAL = 14629;   /* prepaid + on-trip, rounded per plan */
-const PAID_SO_FAR = 7360;    /* settled at booking time */
-const PAID_REMAINING = 7268; /* still to pay / spend on the trip */
+const SPEND_TOTAL = 14929;   /* prepaid + on-trip, rounded per plan */
+const PAID_SO_FAR = 11900;   /* settled so far */
+const PAID_REMAINING = 3029; /* still to pay / spend on the trip */
 
 /* ---------- itinerary — 10 fixed days ---------- */
 const ITIN = [
@@ -111,10 +111,10 @@ const ITIN = [
     morning:{en:'Breakfast, checkout by 12:00. ~13:00 Grab to BKI Terminal 1. LoungeKey lounge before the flight (Collinson QR codes, both travellers).', zh:'早餐后 12:00 前退房。约 13:00 Grab 前往亚庇机场 1 号航站楼。登机前使用 LoungeKey 贵宾室（Collinson QR 码，两人均有）。'},
     afternoon:{en:'15:10–17:45 Batik Air OD1017, business class, BKI T1 → Subang (SZB) — note: not KLIA. 18:25 booked transfer to Le Méridien Petaling Jaya — Executive Twin, 3 nights (Jul 22–25).', zh:'15:10–17:45 峇迪航空 OD1017 商务舱，BKI T1 → 梳邦机场（SZB）—— 注意：并非 KLIA。18:25 已订专车前往八打灵再也艾美酒店 —— 行政双床房，3 晚（7月22–25）。'},
     evening:{en:'20:30 dinner at Curate, Four Seasons Hotel Kuala Lumpur — table for 2 (booked via OpenTable). KLCC / Petronas Towers night stroll after, time permitting.', zh:'20:30 于吉隆坡四季酒店 Curate 晚餐 —— 2 人桌（已通过 OpenTable 预订）。若时间允许，饭后夜游 KLCC / 双子塔。'},
-    meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Airport lounge', zh:'机场贵宾室'}, dinner:{en:'Curate · booked 20:30 · ~RM300', zh:'Curate · 已订 20:30 · 约RM300'} },
+    meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Airport lounge', zh:'机场贵宾室'}, dinner:{en:'Curate · booked 20:30 · ~RM500', zh:'Curate · 已订 20:30 · 约RM500'} },
     transport:{en:'Booked: minivan pickup 18:25 SZB → Le Méridien PJ (KRW 35,925). Grab to/from Four Seasons (~RM100).', zh:'已订：18:25 小型车 SZB → 艾美（KRW 35,925）。往返四季乘 Grab（约RM100）。'},
     tips:{en:'Passport ready for the Sabah exit checkpoint. Curate is in KLCC — allow ~40 min from PJ in evening traffic.', zh:'离开沙巴需过移民检查，护照随身。Curate 位于 KLCC —— 晚高峰自八打灵出发预留约 40 分钟。'},
-    cost:{en:'~RM 475 · 2 pax on-trip', zh:'约RM 475 · 两人当日花费'},
+    cost:{en:'~RM 775 · 2 pax on-trip', zh:'约RM 775 · 两人当日花费'},
     flight:{ route:{en:'Kota Kinabalu (BKI T1) → Kuala Lumpur Subang (SZB)', zh:'亚庇（BKI T1）→ 吉隆坡梳邦机场（SZB）'},
              airline:{en:'Batik Air OD1017 · business class', zh:'峇迪航空 OD1017 · 商务舱'},
              time:{en:'15:10 → 17:45 · ~2h 35m', zh:'15:10 → 17:45 · 约2小时35分'},
@@ -127,7 +127,7 @@ const ITIN = [
     evening:{en:'Dinner nearby in PJ — SS2 hawker food or a mall restaurant, your call.', zh:'八打灵晚餐 —— SS2 大排档或商场餐厅，随心选。'},
     meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Mall food court', zh:'商场美食广场'}, dinner:{en:'PJ local — flexible', zh:'八打灵本地 —— 灵活安排'} },
     transport:{en:'Grab around PJ.', zh:'八打灵范围内 Grab。'},
-    tips:{en:'These tail days are unbudgeted — spend from the ~RM1,000 buffer.', zh:'尾段日程未列入预算 —— 从约 RM1,000 的富余中支出。'},
+    tips:{en:'These tail days are unbudgeted — the remaining buffer is ~RM470, so keep them low-key.', zh:'尾段日程未列入预算 —— 剩余富余约 RM470，宜从简安排。'},
     cost:{en:'Flexible — from buffer', zh:'灵活 —— 由富余承担'} },
 
   { date:{en:'Jul 24 · Fri', zh:'7月24 · 周五'}, city:'kl',
@@ -223,7 +223,7 @@ const DINING_REF = [
     note:{en:'Booked ✓ Jul 21, 20:00', zh:'已订 ✓ 7月21 20:00'} },
   { name:'Curate · Four Seasons KL', city:'kl', booked:true,
     sub:{en:'Hotel signature restaurant · 145 Jalan Ampang', zh:'酒店招牌餐厅 · 145 Jalan Ampang'},
-    cost:{en:'~RM 300', zh:'约RM 300'},
+    cost:{en:'~RM 500', zh:'约RM 500'},
     note:{en:'Booked ✓ Jul 22, 20:30 · via OpenTable', zh:'已订 ✓ 7月22 20:30 · 经 OpenTable'} },
   { name:'Seoul Garden · LaLaport BBCC', city:'kl',
     sub:{en:'Arrival-night dinner, walk from Park Hyatt', zh:'抵达夜晚餐，柏悦步行可达'},
