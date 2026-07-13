@@ -553,14 +553,4 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 .payrate{color:var(--dim);font-size:var(--fs-fine);margin-left:auto}
 .paymyr{color:var(--ink);font-weight:500;min-width:70px;text-align:right;font-size:var(--fs-mono)}
 .paytotal{font-size:var(--fs-name);font-weight:600;color:var(--ink);padding:8px 0;text-align:right}
-
-/* ---------- venue thumbnail images ---------- */
-.vnthumb{display:inline-flex;align-items:center;justify-content:center;
-  width:42px;height:28px;flex-shrink:0;border-radius:4px;
-  text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;
-  margin-right:8px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.vnthumb:hover{transform:scale(1.12);box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.vnthumb span{font-size:14px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.seg{display:flex;align-items:flex-start;gap:0}
-.seg-inner{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px}
 .paydiff{font-size:var(--fs-mono);color:var(--green);text-align:right;padding-bottom:4px}

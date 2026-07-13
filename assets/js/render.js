@@ -20,23 +20,6 @@ TYPE_ICON[TYPE.STAY]        = '\uD83C\uDFE8';
 TYPE_ICON[TYPE.LEISURE]     = '\u2615';
 TYPE_ICON[TYPE.SHOPPING]    = '\uD83D\uDECD\uFE0F';
 
-/* ---------- venue image thumbnails ---------- */
-var VN_GRADIENT = {};
-VN_GRADIENT[TYPE.FLIGHT]      = 'linear-gradient(135deg,#667eea,#764ba2)';
-VN_GRADIENT[TYPE.TRANSPORT]   = 'linear-gradient(135deg,#4facfe,#00f2fe)';
-VN_GRADIENT[TYPE.MEAL]        = 'linear-gradient(135deg,#f5af19,#f12711)';
-VN_GRADIENT[TYPE.SIGHTSEEING] = 'linear-gradient(135deg,#11998e,#38ef7d)';
-VN_GRADIENT[TYPE.STAY]        = 'linear-gradient(135deg,#f093fb,#f5576c)';
-VN_GRADIENT[TYPE.LEISURE]     = 'linear-gradient(135deg,#c79060,#8B6914)';
-VN_GRADIENT[TYPE.SHOPPING]    = 'linear-gradient(135deg,#a18cd1,#fbc2eb)';
-
-function vnThumb(type, mapUrl){
-  if(!mapUrl) return '';
-  var grad = VN_GRADIENT[type] || 'linear-gradient(135deg,#667eea,#764ba2)';
-  var icon = TYPE_ICON[type] || '\uD83D\uDCCD';
-  return '<a class="vnthumb" href="' + mapUrl + '" target="_blank" rel="noopener" style="background:' + grad + '" title="' + t('day.mapLink') + '"><span>' + icon + '</span></a>';
-}
-
 /* ---------- budget & payments (static - actuals) ---------- */
 function renderBudget(){
   var fund = '';
@@ -116,11 +99,9 @@ function renderItin(){
       var confirmBadge = row.confirm ? ' <span class="iconfirm">#' + (typeof row.confirm === 'string' ? row.confirm : L(row.confirm)) + '</span>' : '';
 
       var doneClass = row.done ? ' seg-done' : '';
-      return '<div class="seg' + doneClass + '">' +
-        vnThumb(row.type, row.mapUrl) +
-        '<div class="seg-inner"><span class="seglab mono">' +
+      return '<div class="seg' + doneClass + '"><span class="seglab mono">' +
         icon + ' ' + row.t + '</span><span class="segtxt">' + L(row.txt) +
-        doneMark + costBadge + confirmBadge + mapLink + '</span></div></div>';
+        doneMark + costBadge + confirmBadge + mapLink + '</span></div>';
     }).join('');
 
     /* day map link */
