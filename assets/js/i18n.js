@@ -33,11 +33,11 @@ const I18N = (function(){
       'readout.total':    'Trip total',
       'dyn.spare':        'RM {n} buffer left',
       'dyn.over':         'RM {n} over the fund',
-      'verdict.ok':       'Fully booked and inside the pooled fund — the buffer covers the unplanned PJ tail days.',
+      'verdict.ok':       'Fully booked and inside the pooled fund — RM buffer intact; Jul 23–25 runs on separate plans.',
       'verdict.over':     'Planned spend exceeds the pooled fund — trim the on-trip categories.',
 
       'sec.itin':         'Itinerary',
-      'itin.sub':         '10 days · Jul 16–25 · booked. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span> · <span style="color:var(--red)">red = departure</span>',
+      'itin.sub':         '7 days together · Jul 16–22 · booked. Jul 23–25 (Le Méridien PJ) runs on separate plans. <span style="color:var(--kl)">amber = KL / PJ</span> · <span style="color:var(--pg)">teal = Kota Kinabalu</span>',
 
       'sec.details':      'Trip details & essentials',
       'details.sub':      'Flights, transfers, stays, dining, experiences & know-before-you-go — everything confirmed.',
@@ -99,11 +99,11 @@ const I18N = (function(){
       'readout.total':    '行程总计',
       'dyn.spare':        '剩余富余 RM {n}',
       'dyn.over':         '超出资金 RM {n}',
-      'verdict.ok':       '全部订妥且在共同资金之内 —— 富余可覆盖八打灵尾段的自由安排。',
+      'verdict.ok':       '全部订妥且在共同资金之内 —— 富余保留；7月23–25 另行安排。',
       'verdict.over':     '计划支出超出共同资金 —— 请压缩行程内开销。',
 
       'sec.itin':         '行程',
-      'itin.sub':         '共 10 天 · 7月16–25 · 已预订。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span> · <span style="color:var(--red)">红色 = 回程</span>',
+      'itin.sub':         '同游 7 天 · 7月16–22 · 已预订。7月23–25（艾美）另行安排。<span style="color:var(--kl)">琥珀 = 吉隆坡 / 八打灵</span> · <span style="color:var(--pg)">青色 = 亚庇</span>',
 
       'sec.details':      '行程详情与须知',
       'details.sub':      '航班、接送、住宿、餐饮、体验与出行须知 —— 全部已确认。',

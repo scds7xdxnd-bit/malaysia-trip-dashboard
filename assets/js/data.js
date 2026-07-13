@@ -120,35 +120,6 @@ const ITIN = [
              time:{en:'15:10 → 17:45 · ~2h 35m', zh:'15:10 → 17:45 · 约2小时35分'},
              ref:{en:'Booked · pkg RM 3,154 w/ Le Méridien', zh:'已出票 · 与艾美套票 RM 3,154'} } },
 
-  { date:{en:'Jul 23 · Thu', zh:'7月23 · 周四'}, city:'kl',
-    title:{en:'Petaling Jaya · at leisure', zh:'八打灵再也 · 自由活动'},
-    morning:{en:'Sleep in. Pool and a slow breakfast at Le Méridien.', zh:'睡到自然醒。艾美泳池与悠闲早餐。'},
-    afternoon:{en:'Unscheduled — mall day (Sunway Pyramid / 1 Utama / Paradigm) or catch any KL spot you missed.', zh:'无固定安排 —— 逛商场（双威金字塔 / 1 Utama / Paradigm），或补上错过的吉隆坡景点。'},
-    evening:{en:'Dinner nearby in PJ — SS2 hawker food or a mall restaurant, your call.', zh:'八打灵晚餐 —— SS2 大排档或商场餐厅，随心选。'},
-    meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Mall food court', zh:'商场美食广场'}, dinner:{en:'PJ local — flexible', zh:'八打灵本地 —— 灵活安排'} },
-    transport:{en:'Grab around PJ.', zh:'八打灵范围内 Grab。'},
-    tips:{en:'These tail days are unbudgeted — the remaining buffer is ~RM470, so keep them low-key.', zh:'尾段日程未列入预算 —— 剩余富余约 RM470，宜从简安排。'},
-    cost:{en:'Flexible — from buffer', zh:'灵活 —— 由富余承担'} },
-
-  { date:{en:'Jul 24 · Fri', zh:'7月24 · 周五'}, city:'kl',
-    title:{en:'Last full day', zh:'最后一整天'},
-    morning:{en:'Last shopping run or a spa morning.', zh:'最后采购或水疗上午。'},
-    afternoon:{en:'Revisit a favourite spot, then back to pack.', zh:'重游最爱的地方，随后回酒店打包。'},
-    evening:{en:'Farewell dinner — pick the best find of the trip and go again.', zh:'告别晚餐 —— 选旅程中最惊艳的一家再去一次。'},
-    meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Flexible', zh:'灵活安排'}, dinner:{en:'Farewell dinner — flexible', zh:'告别晚餐 —— 灵活安排'} },
-    transport:{en:'Grab as needed.', zh:'按需 Grab。'},
-    tips:{en:'Do online check-in for the flights home; weigh the bags — souvenirs add up.', zh:'为回程航班办理网上值机；称一称行李 —— 手信很占重量。'},
-    cost:{en:'Flexible — from buffer', zh:'灵活 —— 由富余承担'} },
-
-  { date:{en:'Jul 25 · Sat', zh:'7月25 · 周六'}, city:'split',
-    title:{en:'Checkout · fly home', zh:'退房 · 回程'},
-    morning:{en:'Breakfast, checkout before 12:00.', zh:'早餐后 12:00 前退房。'},
-    afternoon:{en:'Head to the airport with time to spare.', zh:'提前充裕出发前往机场。'},
-    evening:{en:'Fly home — trip complete. Travel-insurance cover ends today.', zh:'搭机回家 —— 旅程圆满结束。旅行保险保障至今日。'},
-    meals:{ breakfast:{en:'Hotel', zh:'酒店'}, lunch:{en:'Airport', zh:'机场'}, dinner:{en:'In transit', zh:'旅途中'} },
-    transport:{en:'Grab / booked car to the departure airport.', zh:'Grab / 专车前往出发机场。'},
-    tips:{en:'Keep booking PDFs and the insurance schedule reachable offline until you land.', zh:'落地前请离线保存预订 PDF 与保单。'},
-    cost:{en:'—', zh:'—'} },
 ];
 
 /* ---------- flights (reference card) ---------- */
