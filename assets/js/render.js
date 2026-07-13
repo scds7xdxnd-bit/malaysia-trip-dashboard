@@ -155,7 +155,7 @@ function renderExpenses(){
     html += '<div class="grabrow">' +
       '<span class="grabdate">' + L(g.date) + '</span>' +
       '<span class="grabroute">' + L(g.route) + '</span>' +
-      '<span class="grabcost mono">' + g.cost + '</span>' +
+      '<span class="grabcost mono">' + L(g.cost) + '</span>' +
     '</div>';
   });
 
