@@ -5,3 +5,6 @@ node_modules/
 .idea/
 .claude/
 .vercel
+trip_photos/
+plan_updated.numbers
+*.numbers

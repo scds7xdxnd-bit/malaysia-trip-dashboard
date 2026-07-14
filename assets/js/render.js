@@ -104,6 +104,14 @@ function renderItin(){
         doneMark + confirmBadge + costBadge + mapLink + '</span></div>';
     }).join('');
 
+    /* photo strip */
+    var photoStrip = '';
+    if(plan.photos && plan.photos.length){
+      photoStrip = '<div class="dphotos">' + plan.photos.map(function(src){
+        return '<img class="dphoto" src="' + src + '" alt="" loading="lazy">';
+      }).join('') + '</div>';
+    }
+
     html += '<div class="dday ' + city + '">' +
       '<button class="dday-head" type="button" aria-expanded="false">' +
         '<span class="dday-meta">' + t('dyn.day', {n: i + 1}) + ' &middot; ' + cityLabel + ' &middot; ' + L(plan.date) + '</span>' +
@@ -111,6 +119,7 @@ function renderItin(){
         '<span class="dday-toggle">' + t('day.toggleShow') + '</span>' +
       '</button>' +
       '<div class="dday-body" hidden>' +
+        photoStrip +
         schedHtml +
         flightBlock +
         '<div class="seg"><span class="seglab">' + t('day.tips') + '</span><span class="segtxt">' + L(plan.tips) + '</span></div>' +
@@ -213,12 +222,14 @@ function renderDetails(){
   var stays = '';
   STAYS_REF.forEach(function(s){
     var mapLink = s.mapUrl ? ' <a class="booklink ' + s.city + '" href="' + s.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD Maps</a>' : '';
-    stays += '<div class="staycard"><span class="staydot ' + s.city + '">\u25CF</span>' +
+    var thumb = s.photo ? '<img class="cardthumb" src="' + s.photo + '" alt="" loading="lazy">' : '';
+    stays += '<div class="staycard has-thumb">' + thumb +
+      '<div class="staycard-body"><span class="staydot ' + s.city + '">\u25CF</span>' +
       '<span class="sc-name">' + s.name + '</span>' +
       '<div class="sc-area">' + L(s.room) + '</div>' +
       '<div class="sc-line">' + L(s.dates) + '</div>' +
       '<div class="sc-line"><span class="sc-cost">' + L(s.cost) + '</span>' + mapLink + '</div>' +
-    '</div>';
+    '</div></div>';
   });
 
   /* Dining + Experiences */
@@ -227,7 +238,8 @@ function renderDetails(){
     arr.forEach(function(x){
       var chip = x.booked ? ' <span class="bookedchip">' + t('chip.booked') + '</span>' : '';
       var mapLink = x.mapUrl ? ' <a class="booklink ' + x.city + '" href="' + x.mapUrl + '" target="_blank" rel="noopener">\uD83D\uDCCD</a>' : '';
-      html += '<div class="dc-row"><div class="dc-main">' +
+      var thumb = x.photo ? '<img class="cardthumb sm" src="' + x.photo + '" alt="" loading="lazy">' : '';
+      html += '<div class="dc-row' + (x.photo ? ' has-thumb' : '') + '">' + thumb + '<div class="dc-main">' +
         '<div class="dc-name">' + L(x.name) + dot(x.city) + chip + mapLink + '</div>' +
         (x.sub ? '<div class="dc-sub">' + L(x.sub) + '</div>' : '') +
         (x.note ? '<div class="dc-note">' + L(x.note) + '</div>' : '') +

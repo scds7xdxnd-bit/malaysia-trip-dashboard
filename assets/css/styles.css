@@ -556,3 +556,34 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
 .paymyr{color:var(--ink);font-weight:500;min-width:70px;text-align:right;font-size:var(--fs-mono)}
 .paytotal{font-size:var(--fs-name);font-weight:600;color:var(--ink);padding:8px 0;text-align:right}
 .paydiff{font-size:var(--fs-mono);color:var(--green);text-align:right;padding-bottom:4px}
+
+/* ---------- photos: day strips + card thumbnails ---------- */
+.dphotos{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:6px;
+  scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.dphotos::-webkit-scrollbar{height:6px}
+.dphotos::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.dphoto{height:120px;width:auto;flex:0 0 auto;border-radius:9px;object-fit:cover;
+  border:1px solid var(--line);background:var(--panel2);cursor:zoom-in;transition:transform .2s,box-shadow .2s}
+.dphoto:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+@media(max-width:480px){ .dphoto{height:96px} }
+
+/* card thumbnails on stays / dining / experiences */
+.staycard.has-thumb{display:flex;gap:12px;align-items:flex-start}
+.staycard-body{min-width:0;flex:1}
+.dc-row.has-thumb{align-items:flex-start}
+.cardthumb{width:84px;height:64px;flex:0 0 auto;object-fit:cover;border-radius:8px;
+  border:1px solid var(--line);background:var(--panel2);cursor:zoom-in}
+.cardthumb.sm{width:64px;height:52px;margin-right:2px}
+@media(max-width:480px){ .cardthumb{width:64px;height:50px} .cardthumb.sm{width:52px;height:44px} }
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+  background:rgba(6,8,11,.92);cursor:zoom-out;padding:24px}
+.lightbox.on{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 12px 48px rgba(0,0,0,.6)}
+
+/* print: hide photos to keep the plan compact */
+@media print{
+  .dphotos,.cardthumb,.lightbox{display:none!important}
+  .staycard.has-thumb{display:block}
+}

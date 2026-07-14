@@ -67,6 +67,20 @@ function init(){
     }
   });
 
+  /* photo lightbox — open on any .dphoto / .cardthumb click, close on click/Esc */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightboxImg');
+  if(lb && lbImg){
+    document.body.addEventListener('click', function(e){
+      var img = e.target.closest('.dphoto, .cardthumb');
+      if(img){ lbImg.src = img.src; lb.classList.add('on'); lb.setAttribute('aria-hidden','false'); return; }
+      if(e.target === lb || e.target === lbImg){ lb.classList.remove('on'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && lb.classList.contains('on')){ lb.classList.remove('on'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }
+    });
+  }
+
   I18N.apply();
 }
 
